@@ -8,3 +8,4 @@ import org.springframework.stereotype.Repository;
 public interface IncidentTicketRepository extends JpaRepository<IncidentTicket, Long> {
 }
 //SampleCommit
+//SampleCommit2
