@@ -18,7 +18,7 @@ public class Notification {
     private Long userId;
     private String message;
     private boolean isRead;
-    private LocalDateTime timestamp;
+    private LocalDateTime createdAt;
 
     public Notification() {
     }
@@ -55,11 +55,11 @@ public class Notification {
         isRead = read;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTimestamp(LocalDateTime timestamp) {
-        this.timestamp = timestamp;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }
