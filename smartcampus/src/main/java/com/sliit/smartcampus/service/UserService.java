@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -18,11 +19,18 @@ public class UserService {
     }
 
     public User registerUser(User user) {
-        // Add password hashing or specific validation logic here if needed in the future
         return userRepository.save(user);
     }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public User loginUser(String email, String password) {
+        Optional<User> userOpt = userRepository.findByEmail(email);
+        if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
+            return userOpt.get();
+        }
+        return null;
     }
 }
