@@ -15,10 +15,12 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final com.sliit.smartcampus.security.JwtTokenProvider tokenProvider;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, com.sliit.smartcampus.security.JwtTokenProvider tokenProvider) {
         this.userService = userService;
+        this.tokenProvider = tokenProvider;
     }
 
     @PostMapping("/register")
@@ -31,8 +33,11 @@ public class UserController {
     public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
         User user = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
         if (user != null) {
-            // Usually, in a real scenario, you'd also return a JWT here for manual logins.
-            return ResponseEntity.ok(user);
+            String token = tokenProvider.generateTokenFromUser(user);
+            java.util.Map<String, Object> response = new java.util.HashMap<>();
+            response.put("user", user);
+            response.put("jwt_token", token);
+            return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
         }

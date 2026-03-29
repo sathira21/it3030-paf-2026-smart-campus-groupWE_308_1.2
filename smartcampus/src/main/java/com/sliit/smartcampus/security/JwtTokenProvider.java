@@ -31,6 +31,8 @@ public class JwtTokenProvider {
 
         return Jwts.builder()
                 .setSubject(userPrincipal.getEmail())
+                .claim("userId", userPrincipal.getId())
+                .claim("roles", authentication.getAuthorities().toString())
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -55,5 +57,19 @@ public class JwtTokenProvider {
             System.err.println("Invalid JWT token: " + ex.getMessage());
         }
         return false;
+    }
+
+    public String generateTokenFromUser(com.sliit.smartcampus.model.User user) {
+        Date now = new Date();
+        Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
+
+        return Jwts.builder()
+                .setSubject(user.getEmail())
+                .claim("userId", user.getId())
+                .claim("roles", "[ROLE_" + user.getRole() + "]") // Manual role assignment
+                .setIssuedAt(new Date())
+                .setExpiration(expiryDate)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 }

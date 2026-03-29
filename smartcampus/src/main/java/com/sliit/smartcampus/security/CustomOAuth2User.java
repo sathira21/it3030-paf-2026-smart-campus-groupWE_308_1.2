@@ -8,12 +8,18 @@ import java.util.Map;
 
 public class CustomOAuth2User implements OAuth2User {
 
+    private final Long id;
     private final OAuth2User oauth2User;
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomOAuth2User(OAuth2User oauth2User, Collection<? extends GrantedAuthority> authorities) {
+    public CustomOAuth2User(Long id, OAuth2User oauth2User, Collection<? extends GrantedAuthority> authorities) {
+        this.id = id;
         this.oauth2User = oauth2User;
         this.authorities = authorities;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     @Override

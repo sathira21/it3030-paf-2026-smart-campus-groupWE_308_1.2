@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus - Admin Control Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.3); }
+        .admin-card { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; }
+    </style>
+</head>
+<body class="min-h-screen p-10 flex flex-col items-center">
+
+    <div class="w-full max-w-[1240px]">
+        <!-- Header -->
+        <header class="flex justify-between items-end mb-12">
+            <div>
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-[10px] font-black uppercase tracking-widest mb-4">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span> Security Administrator
+                </div>
+                <h1 class="text-[40px] font-black text-[#0f172a] tracking-tight leading-none">Campus Command Center</h1>
+                <p class="text-slate-500 font-medium mt-2">Oversee all campus incidents and maintenance requests globally.</p>
+            </div>
+            
+            <div class="flex gap-4">
+                <button onclick="localStorage.removeItem('jwt_token'); window.location.href='/index.html'" class="glass text-slate-500 font-bold py-3 px-6 rounded-2xl hover:bg-slate-50 transition-all text-sm">Logout</button>
+                <div class="w-12 h-12 rounded-2xl admin-card flex items-center justify-center font-bold shadow-xl shadow-slate-900/20">A</div>
+            </div>
+        </header>
+
+        <!-- Stats Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+            <div class="glass p-8 rounded-[32px] border border-slate-200 shadow-sm relative overflow-hidden group">
+                <div class="absolute -right-4 -bottom-4 opacity-[0.05] group-hover:scale-110 transition-transform duration-500"><svg class="w-32 h-32" fill="currentColor" viewBox="0 0 24 24"><path d="M12 4v16m8-8H4"/></svg></div>
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Active Tickets</p>
+                <h2 id="stats-open" class="text-4xl font-black text-blue-600">0</h2>
+                <div class="mt-4 flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
+                    <span class="text-emerald-500">+12%</span> since yesterday
+                </div>
+            </div>
+            <div class="glass p-8 rounded-[32px] border border-slate-200 shadow-sm">
+                <p class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Resolved Today</p>
+                <h2 id="stats-resolved" class="text-4xl font-black text-emerald-500">0</h2>
+                <div class="mt-4 flex items-center gap-1.5 text-[11px] font-bold text-slate-400">
+                    <span class="text-blue-500">84%</span> completion rate
+                </div>
+            </div>
+            <div class="admin-card p-8 rounded-[32px] shadow-2xl shadow-slate-900/20 col-span-2 flex items-center justify-between">
+                <div>
+                    <h3 class="text-xl font-bold mb-1">Smart Campus Security</h3>
+                    <p class="text-slate-400 text-sm font-medium">RBAC & OAuth2 system is healthy.</p>
+                </div>
+                <div class="w-16 h-16 rounded-3xl bg-white/10 flex items-center justify-center">
+                    <svg class="w-10 h-10 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Global Tickets Table -->
+        <div class="glass rounded-[40px] overflow-hidden border border-slate-200">
+            <div class="px-10 py-8 flex justify-between items-center bg-white/40 border-b border-slate-100">
+                <h3 class="font-black text-xl text-slate-900">Live Incident Monitoring</h3>
+                <div class="flex gap-3">
+                    <input type="text" placeholder="Search campus..." class="bg-white/50 border border-slate-200 rounded-full h-10 px-5 text-xs font-semibold placeholder-slate-400 focus:border-blue-500 outline-none w-64 transition-all">
+                    <button class="bg-slate-900 text-white rounded-full h-10 px-6 text-xs font-bold hover:bg-black transition-all">Export Report</button>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead>
+                        <tr class="text-[10px] font-black text-slate-400 bg-slate-50 uppercase tracking-[0.2em] px-10">
+                            <th class="py-5 pl-10">INCIDENT ID</th>
+                            <th class="py-5">STUDENT EMAIL</th>
+                            <th class="py-5">ISSUE DETAILS</th>
+                            <th class="py-5">PRIORITY</th>
+                            <th class="py-5">ROOM</th>
+                            <th class="py-5 pr-10 text-right">ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admin-ticket-body">
+                        <!-- Content here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8081/api';
+        const token = localStorage.getItem('jwt_token');
+
+        if (!token) window.location.href = '/index.html';
+
+        const headers = { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        };
+
+        // Fetch Global Tickets
+        async function fetchGlobalTickets() {
+            try {
+                const res = await fetch(`${API_URL}/tickets/all`, { headers });
+                const tickets = await res.json();
+                
+                // Update stats
+                const openCount = tickets.filter(t => t.status !== 'RESOLVED').length;
+                const resolvedCount = tickets.filter(t => t.status === 'RESOLVED').length;
+                document.getElementById('stats-open').textContent = openCount;
+                document.getElementById('stats-resolved').textContent = resolvedCount;
+
+                const tbody = document.getElementById('admin-ticket-body');
+                tbody.innerHTML = tickets.map(t => `
+                    <tr class="border-b border-slate-50 hover:bg-white/50 group transition-all duration-300">
+                        <td class="py-6 pl-10 font-black text-slate-400 text-[11px]">#${t.id}</td>
+                        <td class="py-6">
+                            <div class="flex flex-col">
+                                <span class="font-bold text-[13px] text-slate-800">${t.createdBy.split('@')[0]}</span>
+                                <span class="text-[11px] text-slate-400 font-bold">${t.createdBy}</span>
+                            </div>
+                        </td>
+                        <td class="py-6">
+                            <span class="block font-black text-slate-900 text-[14px] mb-0.5">${t.title}</span>
+                            <span class="text-[11px] text-slate-500 font-medium">${t.description}</span>
+                        </td>
+                        <td class="py-6">
+                            <span class="px-3 py-1.5 rounded-xl text-[10px] font-black tracking-widest uppercase ${
+                                t.priority === 'HIGH' ? 'bg-rose-50 text-rose-500 ring-1 ring-rose-500/10' : 'bg-slate-100 text-slate-500'
+                            }">${t.priority}</span>
+                        </td>
+                        <td class="py-6 font-black text-slate-700 text-xs">${t.roomId}</td>
+                        <td class="py-6 pr-10 text-right">
+                            ${t.status !== 'RESOLVED' ? 
+                                `<button onclick="resolveTicket(${t.id})" class="bg-emerald-50 text-emerald-600 hover:bg-emerald-500 hover:text-white font-black text-[10px] px-5 py-2.5 rounded-full uppercase tracking-widest transition-all">Quick Resolve</button>` :
+                                `<span class="inline-flex items-center gap-2 text-emerald-500 font-black text-[10px] uppercase tracking-widest bg-emerald-50/50 px-4 py-2 rounded-full border border-emerald-100">
+                                    <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="4"><path d="M5 13l4 4L19 7"/></svg>
+                                    Resolved
+                                </span>`
+                            }
+                        </td>
+                    </tr>
+                `).join('');
+            } catch(e) {}
+        }
+
+        async function resolveTicket(id) {
+            const res = await fetch(`${API_URL}/tickets/${id}/status`, {
+                method: 'PATCH',
+                headers,
+                body: JSON.stringify({ status: 'RESOLVED' })
+            });
+
+            if (res.ok) fetchGlobalTickets();
+        }
+
+        fetchGlobalTickets();
+        setInterval(fetchGlobalTickets, 5000); // Poll every 5 seconds for live updates
+    </script>
+</body>
+</html>

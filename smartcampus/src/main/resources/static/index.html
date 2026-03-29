@@ -265,10 +265,15 @@
                 btnSpinner.classList.add('hidden');
                 
                 if (res.status >= 200 && res.status < 300) {
+                    // Save JWT token for session
+                    if (res.data?.jwt_token) {
+                        localStorage.setItem('jwt_token', res.data.jwt_token);
+                    }
+                    
                     showToast('Authentication successful.', 'success');
                     setTimeout(() => {
-                        const role = res.data?.role || res.data?.user?.role || res.data?.authorities?.[0]?.authority || 'USER';
-                        window.location.href = (role === 'ADMIN' || role === 'ROLE_ADMIN') ? 'admin-dashboard.html' : 'student-dashboard.html';
+                        const role = res.data?.user?.role || res.data?.role || 'USER';
+                        window.location.href = (role === 'ADMIN') ? 'admin-dashboard.html' : 'student-dashboard.html';
                     }, 1200);
                 } else {
                     showToast(res.data?.message || res.data?.error || 'Invalid credentials.', 'error');

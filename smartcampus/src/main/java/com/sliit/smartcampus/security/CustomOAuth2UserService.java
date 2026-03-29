@@ -48,6 +48,6 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 new SimpleGrantedAuthority("ROLE_" + user.getRole())
         );
 
-        return new CustomOAuth2User(oauth2User, authorities);
+        return new CustomOAuth2User(user.getId(), oauth2User, authorities);
     }
 }
