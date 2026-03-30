@@ -34,4 +34,26 @@ public class IncidentTicketExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(TicketNotFoundException.class)
+    public ResponseEntity<TicketErrorResponse> handleTicketNotFoundException(TicketNotFoundException ex) {
+        TicketErrorResponse response = new TicketErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.NOT_FOUND.value(),
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(InvalidTicketStateException.class)
+    public ResponseEntity<TicketErrorResponse> handleInvalidTicketStateException(InvalidTicketStateException ex) {
+        TicketErrorResponse response = new TicketErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
