@@ -1,6 +1,8 @@
 package com.sliit.smartcampus.controller;
 
 import com.sliit.smartcampus.dto.IncidentTicketRequest;
+import com.sliit.smartcampus.dto.TicketStatusUpdateRequest;
+import com.sliit.smartcampus.dto.TechnicianAssignmentRequest;
 import com.sliit.smartcampus.model.IncidentTicket;
 import com.sliit.smartcampus.service.IncidentTicketService;
 import jakarta.validation.Valid;
@@ -32,5 +34,21 @@ public class IncidentTicketController {
     public ResponseEntity<List<IncidentTicket>> getAllTickets() {
         List<IncidentTicket> tickets = service.getAllTickets();
         return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<IncidentTicket> updateTicketStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody TicketStatusUpdateRequest request) {
+        IncidentTicket updatedTicket = service.updateTicketStatus(id, request.getStatus());
+        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/assign")
+    public ResponseEntity<IncidentTicket> assignTechnician(
+            @PathVariable Long id,
+            @Valid @RequestBody TechnicianAssignmentRequest request) {
+        IncidentTicket updatedTicket = service.assignTechnician(id, request.getAssignedTechnician(), request.getResolutionNotes());
+        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
     }
 }
