@@ -3,57 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Authenticating...</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
-        .spinner { border: 4px solid rgba(0, 0, 0, 0.1); width: 36px; height: 36px; border-radius: 50%; border-left-color: #3b82f6; animation: spin 1s linear infinite; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="text-center">
-        <div class="spinner mx-auto mb-4"></div>
-        <h2 class="text-xl font-bold text-slate-800">Finalizing Security...</h2>
-        <p class="text-slate-500 mt-2">Setting up your campus workspace.</p>
-    </div>
-
+    <title>Smart Campus - Auth Success</title>
     <script>
-        // Get URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
-
-        if (token) {
-            // Cool stuff: Store token securely
-            localStorage.setItem('jwt_token', token);
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
             
-            // Get user info from token (we'll decode the base64 part)
-            try {
-                const base64Url = token.split('.')[1];
-                const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-                const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-                    return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-                }).join(''));
-                
-                const payload = JSON.parse(jsonPayload);
-                const role = payload.roles || payload.role || payload.authorities?.[0]?.authority || 'USER';
-
-                // Redirect based on role
-                setTimeout(() => {
-                    if (role.includes('ADMIN')) {
-                        window.location.href = '/admin-dashboard.html';
+            if (token) {
+                localStorage.setItem('jwt_token', token);
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    const roles = payload.roles || '';
+                    if (roles.includes('ADMIN')) {
+                        window.location.href = 'admin-dashboard.html';
                     } else {
-                        window.location.href = '/student-dashboard.html';
+                        window.location.href = 'student-dashboard.html';
                     }
-                }, 1000);
-            } catch (e) {
-                console.error("Token decoding failed", e);
-                window.location.href = '/index.html?error=auth_failed';
+                } catch (e) {
+                    window.location.href = 'student-dashboard.html'; // Fallback
+                }
+            } else {
+                window.location.href = 'index.html?error=oauth_failed';
             }
-        } else {
-            window.location.href = '/index.html?error=no_token';
-        }
+        };
     </script>
+</head>
+<body style="background: #f2f6fa; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div style="text-align: center;">
+        <h2 style="color: #3b82f6;">Finalizing Authentication...</h2>
+        <p style="color: #64748b;">Please wait while we set up your session.</p>
+    </div>
 </body>
 </html>

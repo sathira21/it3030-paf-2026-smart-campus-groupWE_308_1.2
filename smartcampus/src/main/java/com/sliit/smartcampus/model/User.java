@@ -19,6 +19,10 @@ public class User {
     private String password;
     private String role;
 
+    @jakarta.persistence.Column(nullable = true)
+    private Boolean isEnabled = false;
+    private String otpCode;
+
     public User() {
     }
 
@@ -60,6 +64,22 @@ public class User {
 
     public void setRole(String role) {
         this.role = role;
+    }
+
+    public Boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public String getOtpCode() {
+        return otpCode;
+    }
+
+    public void setOtpCode(String otpCode) {
+        this.otpCode = otpCode;
     }
 }
 

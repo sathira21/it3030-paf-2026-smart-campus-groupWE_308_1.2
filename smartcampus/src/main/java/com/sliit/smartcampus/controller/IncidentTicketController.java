@@ -22,13 +22,17 @@ public class IncidentTicketController {
         this.incidentTicketService = incidentTicketService;
     }
 
+    // ── Create ──────────────────────────────────────────────────────────────
+
     @PostMapping("/create")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
-    public ResponseEntity<IncidentTicket> createTicket(@RequestBody IncidentTicket ticket, Authentication authentication) {
-        // Set creator to current logged-in user email
+    public ResponseEntity<IncidentTicket> createTicket(@RequestBody IncidentTicket ticket,
+                                                       Authentication authentication) {
         ticket.setCreatedBy(authentication.getName());
         return ResponseEntity.ok(incidentTicketService.createTicket(ticket));
     }
+
+    // ── Read ─────────────────────────────────────────────────────────────────
 
     @GetMapping("/my")
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
@@ -38,14 +42,49 @@ public class IncidentTicketController {
 
     @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<List<IncidentTicket>> getAllTickets() {
-        return ResponseEntity.ok(incidentTicketService.getAllTickets());
+    public ResponseEntity<List<IncidentTicket>> getAllTickets(
+            @RequestParam(defaultValue = "ALL") String status) {
+        return ResponseEntity.ok(incidentTicketService.getAllTicketsByStatus(status));
     }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> getTicketById(@PathVariable Long id) {
+        return incidentTicketService.getTicketById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Long>> getStats() {
+        return ResponseEntity.ok(incidentTicketService.getStats());
+    }
+
+    // ── Update ───────────────────────────────────────────────────────────────
 
     @PatchMapping("/{id}/status")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<IncidentTicket> updateStatus(@PathVariable Long id, @RequestBody Map<String, String> statusMap) {
+    public ResponseEntity<IncidentTicket> updateStatus(@PathVariable Long id,
+                                                       @RequestBody Map<String, String> statusMap) {
         String newStatus = statusMap.get("status");
         return ResponseEntity.ok(incidentTicketService.updateStatus(id, newStatus));
+    }
+
+    @PatchMapping("/{id}/assign")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> updateAssignment(@PathVariable Long id,
+                                                           @RequestBody Map<String, String> assignMap) {
+        String assignedTo = assignMap.get("assignedTo");
+        return ResponseEntity.ok(incidentTicketService.updateAssignment(id, assignedTo));
+    }
+
+    // ── Delete ───────────────────────────────────────────────────────────────
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+        incidentTicketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
     }
 }
