@@ -4,12 +4,19 @@ import com.sliit.smartcampus.dto.IncidentTicketRequest;
 import com.sliit.smartcampus.exception.InvalidTicketStateException;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
 import com.sliit.smartcampus.model.IncidentTicket;
+import com.sliit.smartcampus.model.TicketComment;
 import com.sliit.smartcampus.repository.IncidentTicketRepository;
+import com.sliit.smartcampus.repository.TicketCommentRepository;
 import com.sliit.smartcampus.repository.UserRepository;
 import com.sliit.smartcampus.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sliit.smartcampus.model.TicketStatus;
+import com.sliit.smartcampus.exception.TicketNotFoundException;
+import com.sliit.smartcampus.exception.InvalidTicketStateException;
+import com.sliit.smartcampus.exception.CommentNotFoundException;
+import com.sliit.smartcampus.exception.CommentOwnershipException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,14 +28,17 @@ public class IncidentTicketService {
     private final IncidentTicketRepository incidentTicketRepository;
     private final NotificationService notificationService;
     private final UserRepository userRepository;
+    private final TicketCommentRepository ticketCommentRepository;
 
     @Autowired
     public IncidentTicketService(IncidentTicketRepository incidentTicketRepository,
                                  NotificationService notificationService,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 TicketCommentRepository ticketCommentRepository) {
         this.incidentTicketRepository = incidentTicketRepository;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
+        this.ticketCommentRepository = ticketCommentRepository;
     }
 
     public IncidentTicket createTicket(IncidentTicket ticket) {
@@ -145,5 +155,33 @@ public class IncidentTicketService {
             String message = "Ticket #" + ticket.getId() + " \"" + ticket.getTitle() + "\" " + statusLabel;
             notificationService.createNotification(userOpt.get().getId(), message);
         }
+    }
+
+    public TicketComment addComment(Long ticketId, String author, String commentText) {
+        IncidentTicket ticket = incidentTicketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+
+        TicketComment comment = new TicketComment(commentText, author, ticket);
+        ticket.addComment(comment);
+        return ticketCommentRepository.save(comment);
+    }
+
+    public void deleteComment(Long ticketId, Long commentId, String userEmail) {
+        IncidentTicket ticket = incidentTicketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+
+        TicketComment comment = ticketCommentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException("Comment not found with id: " + commentId));
+
+        if (!comment.getIncidentTicket().getId().equals(ticket.getId())) {
+            throw new CommentNotFoundException("Comment not found for this ticket: " + ticketId);
+        }
+
+        if (!comment.getAuthor().equals(userEmail)) {
+            throw new CommentOwnershipException("You do not have permission to delete this comment");
+        }
+
+        ticket.removeComment(comment);
+        ticketCommentRepository.delete(comment);
     }
 }
