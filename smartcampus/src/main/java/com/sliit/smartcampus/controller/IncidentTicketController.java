@@ -9,46 +9,86 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/tickets")
 public class IncidentTicketController {
 
-    private final IncidentTicketService service;
+    private final IncidentTicketService incidentTicketService;
 
     @Autowired
-    public IncidentTicketController(IncidentTicketService service) {
-        this.service = service;
+    public IncidentTicketController(IncidentTicketService incidentTicketService) {
+        this.incidentTicketService = incidentTicketService;
     }
 
-    @PostMapping
-    public ResponseEntity<IncidentTicket> createTicket(@Valid @RequestBody IncidentTicketRequest request) {
-        IncidentTicket createdTicket = service.createTicket(request);
+    // ── Create ──────────────────────────────────────────────────────────────
+
+    @PostMapping("/create")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> createTicket(@Valid @RequestBody IncidentTicketRequest request,
+                                                       Authentication authentication) {
+        request.setCreatedBy(authentication.getName());
+        IncidentTicket createdTicket = incidentTicketService.createTicketFromRequest(request);
         return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
     }
 
-    @GetMapping
-    public ResponseEntity<List<IncidentTicket>> getAllTickets() {
-        List<IncidentTicket> tickets = service.getAllTickets();
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    // ── Read ─────────────────────────────────────────────────────────────────
+
+    @GetMapping("/my")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<List<IncidentTicket>> getMyTickets(Authentication authentication) {
+        return ResponseEntity.ok(incidentTicketService.getTicketsByCreator(authentication.getName()));
     }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<IncidentTicket>> getAllTickets(
+            @RequestParam(defaultValue = "ALL") String status) {
+        return ResponseEntity.ok(incidentTicketService.getAllTicketsByStatus(status));
+    }
+
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> getTicketById(@PathVariable Long id) {
+        return incidentTicketService.getTicketById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/stats")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Long>> getStats() {
+        return ResponseEntity.ok(incidentTicketService.getStats());
+    }
+
+    // ── Update ───────────────────────────────────────────────────────────────
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<IncidentTicket> updateTicketStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody TicketStatusUpdateRequest request) {
-        IncidentTicket updatedTicket = service.updateTicketStatus(id, request.getStatus());
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> updateStatus(@PathVariable Long id,
+                                                       @Valid @RequestBody TicketStatusUpdateRequest request) {
+        return ResponseEntity.ok(incidentTicketService.updateStatus(id, request.getStatus().name()));
     }
 
-    @PutMapping("/{id}/assign")
-    public ResponseEntity<IncidentTicket> assignTechnician(
-            @PathVariable Long id,
-            @Valid @RequestBody TechnicianAssignmentRequest request) {
-        IncidentTicket updatedTicket = service.assignTechnician(id, request.getAssignedTechnician(), request.getResolutionNotes());
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    @PatchMapping("/{id}/assign")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<IncidentTicket> updateAssignment(@PathVariable Long id,
+                                                           @Valid @RequestBody TechnicianAssignmentRequest request) {
+        return ResponseEntity.ok(incidentTicketService.updateAssignment(id, request.getAssignedTechnician(), request.getResolutionNotes()));
+    }
+
+    // ── Delete ───────────────────────────────────────────────────────────────
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id) {
+        incidentTicketService.deleteTicket(id);
+        return ResponseEntity.noContent().build();
     }
 }

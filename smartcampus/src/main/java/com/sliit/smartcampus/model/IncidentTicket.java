@@ -3,6 +3,9 @@ package com.sliit.smartcampus.model;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "incident_tickets")
@@ -13,27 +16,29 @@ public class IncidentTicket {
     private Long id;
 
     private String title;
-    
     private String category;
 
     @Column(length = 1000)
     private String description;
-    
+
     private String priority;
-    
     private String preferredContact;
     
-    @Enumerated(EnumType.STRING)
-    private TicketStatus status;
-    
-    private String assignedTechnician;
+    private String status;
     
     @Column(length = 1000)
     private String resolutionNotes;
-    
     private String createdBy;
-    
+
     private String roomId;
+    private String assignedTo; // Email of the technician/admin assigned to the ticket
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 
     @ElementCollection
     @CollectionTable(name = "ticket_images", joinColumns = @JoinColumn(name = "ticket_id"))
@@ -46,7 +51,7 @@ public class IncidentTicket {
     public IncidentTicket() {
     }
 
-    public IncidentTicket(String title, String category, String description, String priority, String preferredContact, TicketStatus status, String createdBy, String roomId) {
+    public IncidentTicket(String title, String category, String description, String priority, String preferredContact, String status, String createdBy, String roomId) {
         this.title = title;
         this.category = category;
         this.description = description;
@@ -78,21 +83,17 @@ public class IncidentTicket {
 
     // Getters and Setters
 
-    public Long getId() {
-        return id;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getPriority() { return priority; }
+    public void setPriority(String priority) { this.priority = priority; }
 
     public String getCategory() {
         return category;
@@ -102,21 +103,17 @@ public class IncidentTicket {
         this.category = category;
     }
 
-    public String getDescription() {
-        return description;
-    }
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public String getCreatedBy() { return createdBy; }
+    public void setCreatedBy(String createdBy) { this.createdBy = createdBy; }
 
-    public String getPriority() {
-        return priority;
-    }
+    public String getRoomId() { return roomId; }
+    public void setRoomId(String roomId) { this.roomId = roomId; }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
-    }
+    public String getAssignedTo() { return assignedTo; }
+    public void setAssignedTo(String assignedTo) { this.assignedTo = assignedTo; }
 
     public String getPreferredContact() {
         return preferredContact;
@@ -126,44 +123,12 @@ public class IncidentTicket {
         this.preferredContact = preferredContact;
     }
 
-    public TicketStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TicketStatus status) {
-        this.status = status;
-    }
-
-    public String getAssignedTechnician() {
-        return assignedTechnician;
-    }
-
-    public void setAssignedTechnician(String assignedTechnician) {
-        this.assignedTechnician = assignedTechnician;
-    }
-
     public String getResolutionNotes() {
         return resolutionNotes;
     }
 
     public void setResolutionNotes(String resolutionNotes) {
         this.resolutionNotes = resolutionNotes;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
     }
 
     public List<String> getImageAttachments() {
@@ -184,4 +149,10 @@ public class IncidentTicket {
     public void setComments(List<TicketComment> comments) {
         this.comments = comments;
     }
+
+    public LocalDateTime getCreatedAt() { return createdAt; }
+    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
+
+    public LocalDateTime getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

@@ -1,9 +1,15 @@
 package com.sliit.smartcampus.controller;
 
 import com.sliit.smartcampus.security.CustomOAuth2User;
+import com.sliit.smartcampus.dto.VerifyRequest;
+import com.sliit.smartcampus.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,6 +20,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private final UserService userService;
+
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping("/success")
     public Map<String, Object> loginSuccess(@RequestParam(required = false) String token) {
@@ -35,5 +48,21 @@ public class AuthController {
         }
         
         return response;
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity<Map<String, String>> verifyOtp(@RequestBody VerifyRequest request) {
+        boolean isVerified = userService.verifyUser(request.getEmail(), request.getOtp());
+        Map<String, String> response = new HashMap<>();
+
+        if (isVerified) {
+            response.put("status", "success");
+            response.put("message", "Email verified successfully. You can now log in.");
+            return ResponseEntity.ok(response);
+        } else {
+            response.put("status", "error");
+            response.put("message", "Invalid OTP or User not found.");
+            return ResponseEntity.badRequest().body(response);
+        }
     }
 }
