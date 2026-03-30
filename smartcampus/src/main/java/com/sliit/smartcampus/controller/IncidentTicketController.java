@@ -3,7 +3,9 @@ package com.sliit.smartcampus.controller;
 import com.sliit.smartcampus.dto.IncidentTicketRequest;
 import com.sliit.smartcampus.dto.TicketStatusUpdateRequest;
 import com.sliit.smartcampus.dto.TechnicianAssignmentRequest;
+import com.sliit.smartcampus.dto.TicketCommentRequest;
 import com.sliit.smartcampus.model.IncidentTicket;
+import com.sliit.smartcampus.model.TicketComment;
 import com.sliit.smartcampus.service.IncidentTicketService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,5 +52,20 @@ public class IncidentTicketController {
             @Valid @RequestBody TechnicianAssignmentRequest request) {
         IncidentTicket updatedTicket = service.assignTechnician(id, request.getAssignedTechnician(), request.getResolutionNotes());
         return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
+    @PostMapping("/{id}/comments")
+    public ResponseEntity<TicketComment> addComment(@PathVariable Long id, 
+                                                    @Valid @RequestBody TicketCommentRequest request) {
+        TicketComment comment = service.addComment(id, request.getAuthor(), request.getCommentText());
+        return new ResponseEntity<>(comment, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long id, 
+                                              @PathVariable Long commentId,
+                                              @RequestParam String author) {
+        service.deleteComment(id, commentId, author);
+        return ResponseEntity.noContent().build();
     }
 }

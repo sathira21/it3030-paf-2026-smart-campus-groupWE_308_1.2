@@ -2,7 +2,9 @@ package com.sliit.smartcampus.service;
 
 import com.sliit.smartcampus.dto.IncidentTicketRequest;
 import com.sliit.smartcampus.model.IncidentTicket;
+import com.sliit.smartcampus.model.TicketComment;
 import com.sliit.smartcampus.repository.IncidentTicketRepository;
+import com.sliit.smartcampus.repository.TicketCommentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,16 +12,21 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sliit.smartcampus.model.TicketStatus;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
 import com.sliit.smartcampus.exception.InvalidTicketStateException;
+import com.sliit.smartcampus.exception.CommentNotFoundException;
+import com.sliit.smartcampus.exception.CommentOwnershipException;
 import java.util.List;
+
 @Service
 @Transactional
 public class IncidentTicketService {
 
     private final IncidentTicketRepository repository;
+    private final TicketCommentRepository ticketCommentRepository;
 
     @Autowired
-    public IncidentTicketService(IncidentTicketRepository repository) {
+    public IncidentTicketService(IncidentTicketRepository repository, TicketCommentRepository ticketCommentRepository) {
         this.repository = repository;
+        this.ticketCommentRepository = ticketCommentRepository;
     }
 
     public IncidentTicket createTicket(IncidentTicketRequest request) {
@@ -67,5 +74,33 @@ public class IncidentTicketService {
         }
         
         return repository.save(ticket);
+    }
+
+    public TicketComment addComment(Long ticketId, String author, String commentText) {
+        IncidentTicket ticket = repository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+
+        TicketComment comment = new TicketComment(commentText, author, ticket);
+        ticket.addComment(comment);
+        return ticketCommentRepository.save(comment);
+    }
+
+    public void deleteComment(Long ticketId, Long commentId, String userEmail) {
+        IncidentTicket ticket = repository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+
+        TicketComment comment = ticketCommentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException("Comment not found with id: " + commentId));
+
+        if (!comment.getIncidentTicket().getId().equals(ticket.getId())) {
+            throw new CommentNotFoundException("Comment not found for this ticket: " + ticketId);
+        }
+
+        if (!comment.getAuthor().equals(userEmail)) {
+            throw new CommentOwnershipException("You do not have permission to delete this comment");
+        }
+
+        ticket.removeComment(comment);
+        ticketCommentRepository.delete(comment);
     }
 }
