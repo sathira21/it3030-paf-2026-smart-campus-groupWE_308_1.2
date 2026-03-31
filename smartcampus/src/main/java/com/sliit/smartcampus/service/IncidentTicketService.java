@@ -11,6 +11,7 @@ import com.sliit.smartcampus.repository.UserRepository;
 import com.sliit.smartcampus.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.sliit.smartcampus.model.TicketStatus;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
@@ -29,16 +30,19 @@ public class IncidentTicketService {
     private final NotificationService notificationService;
     private final UserRepository userRepository;
     private final TicketCommentRepository ticketCommentRepository;
+    private final FileStorageService fileStorageService;
 
     @Autowired
     public IncidentTicketService(IncidentTicketRepository incidentTicketRepository,
                                  NotificationService notificationService,
                                  UserRepository userRepository,
-                                 TicketCommentRepository ticketCommentRepository) {
+                                 TicketCommentRepository ticketCommentRepository,
+                                 FileStorageService fileStorageService) {
         this.incidentTicketRepository = incidentTicketRepository;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
         this.ticketCommentRepository = ticketCommentRepository;
+        this.fileStorageService = fileStorageService;
     }
 
     public IncidentTicket createTicket(IncidentTicket ticket) {
@@ -142,6 +146,16 @@ public class IncidentTicketService {
         stats.put("RESOLVED",    incidentTicketRepository.countByStatus("RESOLVED"));
         stats.put("TOTAL",       incidentTicketRepository.count());
         return stats;
+    }
+
+    public IncidentTicket uploadEvidence(Long ticketId, MultipartFile[] files) {
+        IncidentTicket ticket = incidentTicketRepository.findById(ticketId)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + ticketId));
+
+        List<String> filePaths = fileStorageService.storeFiles(files);
+        filePaths.forEach(ticket::addImageAttachment);
+
+        return incidentTicketRepository.save(ticket);
     }
 
     private void notifyUserOfStatusChange(IncidentTicket ticket) {

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -107,5 +108,12 @@ public class IncidentTicketController {
                                               @RequestParam String author) {
         incidentTicketService.deleteComment(id, commentId, author);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{id}/evidence")
+    public ResponseEntity<IncidentTicket> uploadEvidence(@PathVariable Long id, 
+                                                         @RequestParam("files") MultipartFile[] files) {
+        IncidentTicket updatedTicket = incidentTicketService.uploadEvidence(id, files);
+        return ResponseEntity.ok(updatedTicket);
     }
 }

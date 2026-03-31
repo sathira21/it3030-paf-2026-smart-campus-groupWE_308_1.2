@@ -8,6 +8,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -77,5 +78,27 @@ public class IncidentTicketExceptionHandler {
                 null
         );
         return new ResponseEntity<>(response, HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ResponseEntity<TicketErrorResponse> handleMaxUploadSizeExceededException(MaxUploadSizeExceededException ex) {
+        TicketErrorResponse response = new TicketErrorResponse(
+                LocalDateTime.now(),
+                413,
+                "File size exceeds the configured maximum limit (5MB per file / 15MB per request).",
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.valueOf(413));
+    }
+
+    @ExceptionHandler(FileValidationException.class)
+    public ResponseEntity<TicketErrorResponse> handleFileValidationException(FileValidationException ex) {
+        TicketErrorResponse response = new TicketErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ex.getMessage(),
+                null
+        );
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
