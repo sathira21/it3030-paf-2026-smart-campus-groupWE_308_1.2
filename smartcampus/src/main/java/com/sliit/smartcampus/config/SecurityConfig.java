@@ -46,7 +46,7 @@ public class SecurityConfig {
             .httpBasic(basic -> basic.disable())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/error", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg", "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
-                .requestMatchers("/api/users/login", "/api/users/register").permitAll()
+                .requestMatchers("/api/users/login", "/api/users/register", "/api/users/login/verify").permitAll()
                 .requestMatchers("/login/**", "/oauth2/**", "/api/auth/**").permitAll()
                 .requestMatchers("/ws-notifications/**", "/api/ws/**").permitAll()
                 .anyRequest().authenticated()
