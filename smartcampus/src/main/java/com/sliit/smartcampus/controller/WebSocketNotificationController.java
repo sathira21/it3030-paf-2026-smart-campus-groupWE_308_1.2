@@ -11,11 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- * Handles WebSocket STOMP messaging for real-time campus notifications.
- *
- * Two broadcast paths:
- *  1. STOMP client → /app/notify → broadcast back to /topic/public
- *  2. Internal REST trigger → POST /api/ws/broadcast → pushes to /topic/public
+ * Controller handles WebSocket STOMP messaging for real-time campus notifications.
+ * Manages event broadcasting across active client sessions securely.
+ * Contains endpoints for both client STOMP paths and internal REST triggers.
  */
 @Controller
 @RequestMapping("/api/ws")

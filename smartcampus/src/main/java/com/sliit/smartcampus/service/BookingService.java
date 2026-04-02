@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class managing Campus Resources and Labs bookings.
+ * Handles creation, status tracking, and dispatching notifications to users upon booking events.
+ */
 @Service
 public class BookingService {
 
