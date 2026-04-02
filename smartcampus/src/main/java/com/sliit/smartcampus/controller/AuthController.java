@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * REST Controller for handling user authentication and MFA processes.
+ * Integrates with Spring Security OAuth2 and generates JWTs.
+ */
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
