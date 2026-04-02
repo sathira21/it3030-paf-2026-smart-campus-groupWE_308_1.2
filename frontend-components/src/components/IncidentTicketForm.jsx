@@ -9,6 +9,7 @@ const IncidentTicketForm = () => {
   });
   const [files, setFiles] = useState([]);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,12 +42,56 @@ const IncidentTicketForm = () => {
     setFiles(files.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Submitting Mock Data:', { ...formData, files });
-    alert('Ticket submitted successfully!');
-    setFormData({ category: '', description: '', priority: 'Low', preferredContact: '' });
-    setFiles([]);
+    setIsLoading(true);
+    setError('');
+
+    try {
+      // 1. Prepare standard JSON properties
+      const ticketPayload = {
+        title: formData.category + ' Issue: ' + formData.description.substring(0, 20) + '...',
+        category: formData.category,
+        description: formData.description,
+        priority: formData.priority,
+        createdBy: formData.preferredContact, // Example mapping
+      };
+
+      // 2. Assemble Multipart FormData mapping JSON stringified parts along with binary Files
+      const submitData = new FormData();
+      
+      // Append JSON payload explicitly specifying the application/json MIME type
+      submitData.append(
+        'ticket', 
+        new Blob([JSON.stringify(ticketPayload)], { type: 'application/json' })
+      );
+
+      // Append binary file iteration
+      files.forEach(file => {
+        submitData.append('files', file);
+      });
+
+      // 3. Simulated/Real Request Dispatch
+      /* 
+       * EXAMPLE API CALL:
+       * await fetch('http://localhost:8081/api/tickets/create-with-files', {
+       *    method: 'POST',
+       *    body: submitData, // Browser automates Content-Type multipart/form-data boundary!
+       *    headers: { 'Authorization': `Bearer ${localStorage.getItem('oauth2_token')}` }
+       * });
+       */
+      
+      // Simulating network delay
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      alert('Ticket submitted successfully with attachments!');
+      setFormData({ category: '', description: '', priority: 'Low', preferredContact: '' });
+      setFiles([]);
+    } catch (err) {
+      setError(err.message || 'An error occurred during submission.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -171,9 +216,20 @@ const IncidentTicketForm = () => {
 
           <button
             type="submit"
-            className="w-full text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-lg px-5 py-3.5 text-center shadow-lg transform hover:-translate-y-0.5 transition-all duration-200"
+            disabled={isLoading}
+            className={`relative w-full flex items-center justify-center text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:ring-4 focus:ring-blue-300 font-bold rounded-xl text-lg px-5 py-3.5 shadow-lg transform transition-all duration-200 ${isLoading ? 'cursor-wait opacity-90' : 'hover:-translate-y-0.5'}`}
           >
-            Submit Ticket
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                Processing Upload...
+              </span>
+            ) : (
+              'Submit Ticket'
+            )}
           </button>
         </form>
       </div>
