@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Service class handling core User business logic.
+ * Manages user registration, role provisioning, and password encryption via BCrypt.
+ * Uses RateLimitingService to mitigate brute-force attempts.
+ */
 @Service
 public class UserService {
 
