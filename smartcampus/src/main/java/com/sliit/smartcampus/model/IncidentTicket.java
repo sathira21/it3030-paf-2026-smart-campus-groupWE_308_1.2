@@ -7,6 +7,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
+/**
+ * Entity representing an Incident Ticket within the Smart Campus Support Hub.
+ * Tracks maintenance, IT, or facility issues raised by users.
+ */
 @Entity
 @Table(name = "incident_tickets")
 public class IncidentTicket {
