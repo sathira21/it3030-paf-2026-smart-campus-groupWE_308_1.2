@@ -7,6 +7,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
+/**
+ * Notification Entity for mapping real-time STOMP socket events 
+ * to persistent storage in the database.
+ */
 @Entity
 @Table(name = "notifications")
 public class Notification {
