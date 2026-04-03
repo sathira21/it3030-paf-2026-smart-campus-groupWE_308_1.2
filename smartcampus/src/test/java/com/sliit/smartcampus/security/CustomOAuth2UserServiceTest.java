@@ -25,6 +25,10 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Unit test for the CustomOAuth2UserService class.
+ * Validates the OAuth flow ensures correct role assignment based on domain/email.
+ */
 @ExtendWith(MockitoExtension.class)
 class CustomOAuth2UserServiceTest {
 
