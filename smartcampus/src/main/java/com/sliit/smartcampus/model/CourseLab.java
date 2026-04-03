@@ -2,6 +2,10 @@ package com.sliit.smartcampus.model;
 
 import jakarta.persistence.*;
 
+/**
+ * CourseLab Entity used to represent physical campus constraints,
+ * tracking capacities and software suites for laboratory scheduling.
+ */
 @Entity
 @Table(name = "course_labs")
 public class CourseLab {
