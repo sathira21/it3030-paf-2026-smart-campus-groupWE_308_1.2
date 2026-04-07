@@ -1,4 +1,4 @@
-package Backend.exception;
+package com.sliit.smartcampus.exception;
 
 public class BookingConflictException extends RuntimeException {
     public BookingConflictException(String message) {
