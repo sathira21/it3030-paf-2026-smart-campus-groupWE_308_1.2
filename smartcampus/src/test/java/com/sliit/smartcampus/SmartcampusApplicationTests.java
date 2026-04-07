@@ -1,13 +1,13 @@
 package com.sliit.smartcampus;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootTest
-class SmartcampusApplicationTests {
+@SpringBootApplication
+public class SmartcampusApplicationTests {
 
-	@Test
-	void contextLoads() {
+	public static void main(String[] args) {
+		SpringApplication.run(SmartcampusApplicationTests.class, args);
 	}
 
 }
