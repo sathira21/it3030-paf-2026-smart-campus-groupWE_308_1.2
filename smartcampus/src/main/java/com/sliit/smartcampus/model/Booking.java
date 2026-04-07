@@ -1,4 +1,4 @@
-package Backend.model;
+package com.sliit.smartcampus.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDate;
