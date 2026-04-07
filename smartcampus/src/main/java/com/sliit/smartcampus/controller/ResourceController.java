@@ -1,7 +1,7 @@
-package Backend.controller;
+package com.sliit.smartcampus.controller;
 
-import Backend.model.Resource;
-import Backend.service.ResourceService;
+import com.sliit.smartcampus.model.Resource;
+import com.sliit.smartcampus.service.ResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

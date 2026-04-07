@@ -1,4 +1,4 @@
-package Backend.controller;
+package com.sliit.smartcampus.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
