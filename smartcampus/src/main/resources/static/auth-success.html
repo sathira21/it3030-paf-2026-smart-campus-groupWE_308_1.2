@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus - Auth Success</title>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+            
+            if (token) {
+                localStorage.setItem('jwt_token', token);
+                try {
+                    const payload = JSON.parse(atob(token.split('.')[1]));
+                    const roles = payload.roles || '';
+                    if (roles.includes('ADMIN')) {
+                        window.location.href = 'admin-dashboard.html';
+                    } else {
+                        window.location.href = 'student-dashboard.html';
+                    }
+                } catch (e) {
+                    window.location.href = 'student-dashboard.html'; // Fallback
+                }
+            } else {
+                window.location.href = 'index.html?error=oauth_failed';
+            }
+        };
+    </script>
+</head>
+<body style="background: #f2f6fa; font-family: sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh;">
+    <div style="text-align: center;">
+        <h2 style="color: #3b82f6;">Finalizing Authentication...</h2>
+        <p style="color: #64748b;">Please wait while we set up your session.</p>
+    </div>
+</body>
+</html>

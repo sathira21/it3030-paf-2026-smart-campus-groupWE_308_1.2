@@ -1,0 +1,323 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.sliit:smartcampus >------------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:4.0.4:run (default-cli) > test-compile @ smartcampus >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ smartcampus ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ smartcampus ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ smartcampus ---
+[INFO] skip non existing resourceDirectory D:\Y3S1-ITPM\it3030-paf-2026-smart-campus-groupWE_308_1.2\smartcampus\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.14.1:testCompile (default-testCompile) @ smartcampus ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:4.0.4:run (default-cli) < test-compile @ smartcampus <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:4.0.4:run (default-cli) @ smartcampus ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.4)
+
+2026-03-30T23:04:37.207+05:30  INFO 1876 --- [           main] c.s.smartcampus.SmartcampusApplication   : Starting SmartcampusApplication using Java 23.0.2 with PID 1876 (D:\Y3S1-ITPM\it3030-paf-2026-smart-campus-groupWE_308_1.2\smartcampus\target\classes started by Sathira in D:\Y3S1-ITPM\it3030-paf-2026-smart-campus-groupWE_308_1.2\smartcampus)
+2026-03-30T23:04:37.213+05:30  INFO 1876 --- [           main] c.s.smartcampus.SmartcampusApplication   : No active profile set, falling back to 1 default profile: "default"
+2026-03-30T23:04:38.497+05:30  INFO 1876 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-30T23:04:38.618+05:30  INFO 1876 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 109 ms. Found 6 JPA repository interfaces.
+2026-03-30T23:04:39.407+05:30  INFO 1876 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8081 (http)
+2026-03-30T23:04:39.433+05:30  INFO 1876 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-30T23:04:39.433+05:30  INFO 1876 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-30T23:04:39.506+05:30  INFO 1876 --- [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 2197 ms
+2026-03-30T23:04:39.761+05:30  INFO 1876 --- [           main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-30T23:04:39.808+05:30  INFO 1876 --- [           main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-03-30T23:04:40.298+05:30  INFO 1876 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-30T23:04:40.341+05:30  INFO 1876 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-03-30T23:04:40.816+05:30  INFO 1876 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection ConnectionID:1 ClientConnectionId: 5fef5507-4f1b-4430-ab40-ebc580843d1d
+2026-03-30T23:04:40.816+05:30  INFO 1876 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-03-30T23:04:40.942+05:30  INFO 1876 --- [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:sqlserver://localhost:1433;concatNullYieldsNull=ON;quotedIdentifier=ON;connectRetryInterval=10;connectRetryCount=1;maxResultBuffer=-1;sendTemporalDataTypesAsStringForBulkCopy=true;delayLoadingLobs=true;useFmtOnly=false;vectorTypeSupport=v1;cacheBulkCopyMetadata=false;bulkCopyForBatchInsertAllowEncryptedValueModifications=false;bulkCopyForBatchInsertTableLock=false;bulkCopyForBatchInsertKeepNulls=false;bulkCopyForBatchInsertKeepIdentity=false;bulkCopyForBatchInsertFireTriggers=false;bulkCopyForBatchInsertCheckConstraints=false;bulkCopyForBatchInsertBatchSize=0;useBulkCopyForBatchInsert=false;cancelQueryTimeout=-1;sslProtocol=TLS;calcBigDecimalPrecision=false;useDefaultJaasConfig=false;jaasConfigurationName=SQLJDBCDriver;statementPoolingCacheSize=0;serverPreparedStatementDiscardThreshold=10;enablePrepareOnFirstPreparedStatementCall=false;fips=false;socketTimeout=0;authentication=NotSpecified;authenticationScheme=nativeAuthentication;xopenStates=false;datetimeParameterType=datetime2;sendTimeAsDatetime=true;replication=false;trustStoreType=JKS;trustServerCertificate=true;TransparentNetworkIPResolution=true;iPAddressPreference=IPv4First;serverNameAsACE=false;sendStringParametersAsUnicode=true;selectMethod=direct;responseBuffering=adaptive;queryTimeout=-1;packetSize=8000;multiSubnetFailover=false;loginTimeout=30;lockTimeout=-1;lastUpdateCount=true;useDefaultGSSCredential=false;prepareMethod=prepexec;encrypt=true;disableStatementPooling=true;databaseName=smart_campus_db;columnEncryptionSetting=Disabled;applicationName=Microsoft JDBC Driver for SQL Server;applicationIntent=readwrite;]
+	Database driver: Microsoft JDBC Driver 13.2 for SQL Server
+	Database dialect: SQLServerDialect
+	Database version: 16.0
+	Default catalog/schema: smart_campus_db/dbo
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 128
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-30T23:04:42.446+05:30  INFO 1876 --- [           main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: alter table users add is_enabled bit not null
+2026-03-30T23:04:43.665+05:30  WARN 1876 --- [           main] o.h.t.s.i.ExceptionHandlerLoggedImpl     : GenerationTarget encountered exception accepting command : Error executing DDL "alter table users add is_enabled bit not null" via JDBC [ALTER TABLE only allows columns to be added that can contain nulls, or have a DEFAULT definition specified, or the column being added is an identity or timestamp column, or alternatively if none of the previous conditions are satisfied the table must be empty to allow addition of this column. Column 'is_enabled' cannot be added to non-empty table 'users' because it does not satisfy these conditions.]
+
+org.hibernate.tool.schema.spi.CommandAcceptanceException: Error executing DDL "alter table users add is_enabled bit not null" via JDBC [ALTER TABLE only allows columns to be added that can contain nulls, or have a DEFAULT definition specified, or the column being added is an identity or timestamp column, or alternatively if none of the previous conditions are satisfied the table must be empty to allow addition of this column. Column 'is_enabled' cannot be added to non-empty table 'users' because it does not satisfy these conditions.]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:81) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlString(AbstractSchemaMigrator.java:566) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.applySqlStrings(AbstractSchemaMigrator.java:506) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.migrateTable(AbstractSchemaMigrator.java:324) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.GroupedSchemaMigratorImpl.performTablesMigration(GroupedSchemaMigratorImpl.java:84) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.performMigration(AbstractSchemaMigrator.java:220) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.internal.AbstractSchemaMigrator.doMigration(AbstractSchemaMigrator.java:96) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.performDatabaseAction(SchemaManagementToolCoordinator.java:269) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.lambda$process$1(SchemaManagementToolCoordinator.java:101) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at java.base/java.util.HashMap.forEach(HashMap.java:1430) ~[na:na]
+	at org.hibernate.tool.schema.spi.SchemaManagementToolCoordinator.process(SchemaManagementToolCoordinator.java:100) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryObserverForSchemaExport.sessionFactoryCreated(SessionFactoryObserverForSchemaExport.java:35) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.internal.SessionFactoryObserverChain.sessionFactoryCreated(SessionFactoryObserverChain.java:33) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.internal.SessionFactoryImpl.<init>(SessionFactoryImpl.java:323) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.internal.SessionFactoryRegistry.instantiateSessionFactory(SessionFactoryRegistry.java:64) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.boot.internal.SessionFactoryBuilderImpl.build(SessionFactoryBuilderImpl.java:437) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1456) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:93) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:443) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:436) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:411) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:419) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1864) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1813) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:603) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:196) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:365) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveConstructorArguments(ConstructorResolver.java:691) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:513) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1362) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1194) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:356) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveValueIfNecessary(BeanDefinitionValueResolver.java:135) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyPropertyValues(AbstractAutowireCapableBeanFactory.java:1712) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1461) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveBean(DefaultListableBeanFactory.java:1225) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1704) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1651) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:912) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:240) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1382) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1221) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:565) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:525) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:333) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:371) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:331) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:201) ~[spring-beans-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.getOrderedBeansOfType(ServletContextInitializerBeans.java:231) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:185) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAsRegistrationBean(ServletContextInitializerBeans.java:180) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.addAdaptableBeans(ServletContextInitializerBeans.java:165) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.servlet.ServletContextInitializerBeans.<init>(ServletContextInitializerBeans.java:97) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.context.servlet.WebApplicationContextInitializer.initialize(WebApplicationContextInitializer.java:53) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.tomcat.servlet.DeferredServletContainerInitializers.onStartup(DeferredServletContainerInitializers.java:55) ~[spring-boot-tomcat-4.0.4.jar:4.0.4]
+	at org.apache.catalina.core.StandardContext.startInternal(StandardContext.java:4416) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1162) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1158) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:714) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHost.startInternal(StandardHost.java:780) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1162) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ContainerBase$StartChild.call(ContainerBase.java:1158) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[na:na]
+	at org.apache.tomcat.util.threads.InlineExecutorService.execute(InlineExecutorService.java:81) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.util.concurrent.AbstractExecutorService.submit(AbstractExecutorService.java:148) ~[na:na]
+	at org.apache.catalina.core.ContainerBase.startInternal(ContainerBase.java:714) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngine.startInternal(StandardEngine.java:201) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardService.startInternal(StandardService.java:410) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardServer.startInternal(StandardServer.java:864) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.util.LifecycleBase.start(LifecycleBase.java:164) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.startup.Tomcat.start(Tomcat.java:435) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.boot.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:131) ~[spring-boot-tomcat-4.0.4.jar:4.0.4]
+	at org.springframework.boot.tomcat.TomcatWebServer.<init>(TomcatWebServer.java:110) ~[spring-boot-tomcat-4.0.4.jar:4.0.4]
+	at org.springframework.boot.tomcat.servlet.TomcatServletWebServerFactory.getTomcatWebServer(TomcatServletWebServerFactory.java:408) ~[spring-boot-tomcat-4.0.4.jar:4.0.4]
+	at org.springframework.boot.tomcat.servlet.TomcatServletWebServerFactory.getWebServer(TomcatServletWebServerFactory.java:166) ~[spring-boot-tomcat-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.createWebServer(ServletWebServerApplicationContext.java:190) ~[spring-boot-web-server-4.0.4.jar:4.0.4]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:164) ~[spring-boot-web-server-4.0.4.jar:4.0.4]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:615) ~[spring-context-7.0.6.jar:7.0.6]
+	at org.springframework.boot.web.server.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:143) ~[spring-boot-web-server-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:756) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:445) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:321) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.4.jar:4.0.4]
+	at com.sliit.smartcampus.SmartcampusApplication.main(SmartcampusApplication.java:10) ~[classes/:na]
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: ALTER TABLE only allows columns to be added that can contain nulls, or have a DEFAULT definition specified, or the column being added is an identity or timestamp column, or alternatively if none of the previous conditions are satisfied the table must be empty to allow addition of this column. Column 'is_enabled' cannot be added to non-empty table 'users' because it does not satisfy these conditions.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:278) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1788) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.doExecuteStatement(SQLServerStatement.java:975) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement$StmtExecCmd.doExecute(SQLServerStatement.java:869) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7825) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4828) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:321) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:253) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.execute(SQLServerStatement.java:842) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyStatement.execute(ProxyStatement.java:95) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyStatement.execute(HikariProxyStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.tool.schema.internal.exec.GenerationTargetToDatabase.accept(GenerationTargetToDatabase.java:76) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	... 109 common frames omitted
+
+2026-03-30T23:04:43.677+05:30  INFO 1876 --- [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-30T23:04:43.770+05:30  INFO 1876 --- [           main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-03-30T23:04:45.008+05:30  WARN 1876 --- [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-30T23:04:45.777+05:30  INFO 1876 --- [           main] o.s.b.w.a.WelcomePageHandlerMapping      : Adding welcome page: class path resource [static/index.html]
+2026-03-30T23:04:46.057+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Starting...
+2026-03-30T23:04:46.057+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@35e7cdb2]]
+2026-03-30T23:04:46.057+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Started.
+2026-03-30T23:04:46.083+05:30  INFO 1876 --- [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8081 (http) with context path '/'
+2026-03-30T23:04:46.088+05:30  INFO 1876 --- [           main] c.s.smartcampus.SmartcampusApplication   : Started SmartcampusApplication in 9.508 seconds (process running for 10.11)
+Hibernate: select count_big(*) from course_labs cl1_0
+Hibernate: select u1_0.id,u1_0.email,u1_0.is_enabled,u1_0.name,u1_0.otp_code,u1_0.password,u1_0.role from users u1_0 where u1_0.email=?
+2026-03-30T23:04:46.757+05:30  WARN 1876 --- [           main] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 207, SQLState: S0001
+2026-03-30T23:04:46.757+05:30  WARN 1876 --- [           main] org.hibernate.orm.jdbc.error             : Invalid column name 'is_enabled'.
+2026-03-30T23:04:46.769+05:30  INFO 1876 --- [           main] .s.b.a.l.ConditionEvaluationReportLogger : 
+
+Error starting ApplicationContext. To display the condition evaluation report re-run your application with 'debug' enabled.
+2026-03-30T23:04:46.795+05:30 ERROR 1876 --- [           main] o.s.boot.SpringApplication               : Application run failed
+
+org.springframework.dao.InvalidDataAccessResourceUsageException: JDBC exception executing SQL [Invalid column name 'is_enabled'.] [select u1_0.id,u1_0.email,u1_0.is_enabled,u1_0.name,u1_0.otp_code,u1_0.password,u1_0.role from users u1_0 where u1_0.email=?]; SQL [select u1_0.id,u1_0.email,u1_0.is_enabled,u1_0.name,u1_0.otp_code,u1_0.password,u1_0.role from users u1_0 where u1_0.email=?]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.convertHibernateAccessException(HibernateExceptionTranslator.java:156) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.convertHibernateAccessException(HibernateExceptionTranslator.java:131) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.hibernate.HibernateExceptionTranslator.translateExceptionIfPossible(HibernateExceptionTranslator.java:105) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.vendor.HibernateJpaDialect.translateExceptionIfPossible(HibernateJpaDialect.java:223) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.translateExceptionIfPossible(AbstractEntityManagerFactoryBean.java:576) ~[spring-orm-7.0.6.jar:7.0.6]
+	at org.springframework.dao.support.ChainedPersistenceExceptionTranslator.translateExceptionIfPossible(ChainedPersistenceExceptionTranslator.java:61) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.dao.support.DataAccessUtils.translateIfNecessary(DataAccessUtils.java:346) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:157) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.6.jar:7.0.6]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:137) ~[spring-data-jpa-4.0.4.jar:4.0.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.6.jar:7.0.6]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:222) ~[spring-aop-7.0.6.jar:7.0.6]
+	at jdk.proxy2/jdk.proxy2.$Proxy135.findByEmail(Unknown Source) ~[na:na]
+	at com.sliit.smartcampus.config.UserDataInitializer.lambda$initUsers$4(UserDataInitializer.java:16) ~[classes/:na]
+	at org.springframework.boot.SpringApplication.lambda$callRunner$1(SpringApplication.java:792) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.util.function.ThrowingConsumer$1.acceptWithException(ThrowingConsumer.java:82) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.function.ThrowingConsumer.accept(ThrowingConsumer.java:60) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.util.function.ThrowingConsumer$1.accept(ThrowingConsumer.java:86) ~[spring-core-7.0.6.jar:7.0.6]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:800) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.callRunner(SpringApplication.java:791) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.lambda$callRunners$0(SpringApplication.java:776) ~[spring-boot-4.0.4.jar:4.0.4]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.accept(ForEachOps.java:184) ~[na:na]
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:571) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:560) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp.evaluateSequential(ForEachOps.java:151) ~[na:na]
+	at java.base/java.util.stream.ForEachOps$ForEachOp$OfRef.evaluateSequential(ForEachOps.java:174) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:265) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.forEach(ReferencePipeline.java:636) ~[na:na]
+	at org.springframework.boot.SpringApplication.callRunners(SpringApplication.java:776) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:328) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1365) ~[spring-boot-4.0.4.jar:4.0.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1354) ~[spring-boot-4.0.4.jar:4.0.4]
+	at com.sliit.smartcampus.SmartcampusApplication.main(SmartcampusApplication.java:10) ~[classes/:na]
+Caused by: org.hibernate.exception.SQLGrammarException: JDBC exception executing SQL [Invalid column name 'is_enabled'.] [select u1_0.id,u1_0.email,u1_0.is_enabled,u1_0.name,u1_0.otp_code,u1_0.password,u1_0.role from users u1_0 where u1_0.email=?]
+	at org.hibernate.exception.internal.SQLStateConversionDelegate.convert(SQLStateConversionDelegate.java:63) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.exception.internal.StandardSQLExceptionConverter.convert(StandardSQLExceptionConverter.java:34) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.engine.jdbc.spi.SqlExceptionHelper.convert(SqlExceptionHelper.java:115) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:290) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.getResultSet(DeferredResultSetAccess.java:190) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.results.jdbc.internal.JdbcValuesResultSetImpl.<init>(JdbcValuesResultSetImpl.java:71) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.resolveJdbcValues(JdbcSelectExecutorStandardImpl.java:393) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.resolveJdbcValuesSource(JdbcSelectExecutorStandardImpl.java:354) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.doExecuteQuery(JdbcSelectExecutorStandardImpl.java:135) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.internal.JdbcSelectExecutorStandardImpl.executeQuery(JdbcSelectExecutorStandardImpl.java:100) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.executeQuery(JdbcSelectExecutor.java:63) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.sql.exec.spi.JdbcSelectExecutor.list(JdbcSelectExecutor.java:137) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:128) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResultOrNull(AbstractSelectionQuery.java:330) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.orm.jpa.SharedEntityManagerCreator$DeferredQueryInvocationHandler.invoke(SharedEntityManagerCreator.java:557) ~[spring-orm-7.0.6.jar:7.0.6]
+	at jdk.proxy2/jdk.proxy2.$Proxy153.getSingleResultOrNull(Unknown Source) ~[na:na]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:328) ~[spring-data-jpa-4.0.4.jar:4.0.4]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:99) ~[spring-data-jpa-4.0.4.jar:4.0.4]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:164) ~[spring-data-jpa-4.0.4.jar:4.0.4]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:154) ~[spring-data-jpa-4.0.4.jar:4.0.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:169) ~[spring-data-commons-4.0.4.jar:4.0.4]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-4.0.4.jar:4.0.4]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:167) ~[spring-data-commons-4.0.4.jar:4.0.4]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:146) ~[spring-data-commons-4.0.4.jar:4.0.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.6.jar:7.0.6]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-4.0.4.jar:4.0.4]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.6.jar:7.0.6]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.6.jar:7.0.6]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.6.jar:7.0.6]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.6.jar:7.0.6]
+	... 26 common frames omitted
+Caused by: com.microsoft.sqlserver.jdbc.SQLServerException: Invalid column name 'is_enabled'.
+	at com.microsoft.sqlserver.jdbc.SQLServerException.makeFromDatabaseError(SQLServerException.java:278) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.getNextResult(SQLServerStatement.java:1788) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.doExecutePreparedStatement(SQLServerPreparedStatement.java:688) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement$PrepStmtExecCmd.doExecute(SQLServerPreparedStatement.java:607) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.TDSCommand.execute(IOBuffer.java:7825) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerConnection.executeCommand(SQLServerConnection.java:4828) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeCommand(SQLServerStatement.java:321) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerStatement.executeStatement(SQLServerStatement.java:253) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.microsoft.sqlserver.jdbc.SQLServerPreparedStatement.executeQuery(SQLServerPreparedStatement.java:521) ~[mssql-jdbc-13.2.1.jre11.jar:na]
+	at com.zaxxer.hikari.pool.ProxyPreparedStatement.executeQuery(ProxyPreparedStatement.java:52) ~[HikariCP-7.0.2.jar:na]
+	at com.zaxxer.hikari.pool.HikariProxyPreparedStatement.executeQuery(HikariProxyPreparedStatement.java) ~[HikariCP-7.0.2.jar:na]
+	at org.hibernate.sql.results.jdbc.internal.DeferredResultSetAccess.executeQuery(DeferredResultSetAccess.java:271) ~[hibernate-core-7.2.7.Final.jar:7.2.7.Final]
+	... 60 common frames omitted
+
+2026-03-30T23:04:46.807+05:30  INFO 1876 --- [           main] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-03-30T23:04:46.827+05:30  INFO 1876 --- [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-03-30T23:04:46.830+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopping...
+2026-03-30T23:04:46.830+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@35e7cdb2]]
+2026-03-30T23:04:46.831+05:30  INFO 1876 --- [           main] o.s.m.s.b.SimpleBrokerMessageHandler     : Stopped.
+2026-03-30T23:04:46.838+05:30  INFO 1876 --- [           main] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-03-30T23:04:46.843+05:30  INFO 1876 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-03-30T23:04:46.852+05:30  INFO 1876 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  14.133 s
+[INFO] Finished at: 2026-03-30T23:04:47+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:4.0.4:run (default-cli) on project smartcampus: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
+
