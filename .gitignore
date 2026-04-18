@@ -4,6 +4,9 @@
 *.swp
 *.swo
 
+# Claude Code tooling
+.claude/
+
 # Build & Dependencies
 target/
 node_modules/
