@@ -37,3 +37,4 @@ Facilities: Update building floor plan mapping
 Booking: Refine cancellation policy enforcement
 Tickets: Export ticket history to CSV
 Auth: Implement rate limiting for password reset
+Notifications: Batch notification processing
