@@ -52,3 +52,4 @@ Auth: Improve user profile update validation
 Notifications: Integrate WebSocket for real-time alerts
 Notifications: Add multi-channel support (SMS and Email)
 Notifications: Optimize notification delivery queue
+Notifications: Implement read/unread status tracking
