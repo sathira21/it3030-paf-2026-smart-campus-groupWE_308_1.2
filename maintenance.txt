@@ -27,3 +27,4 @@ Facilities: Update room availability logic
 Booking: Refactor date validation service
 Tickets: Improve ticket status transition flow
 Auth: Optimize OAuth2 token renewal
+Notifications: Fix email template styling
