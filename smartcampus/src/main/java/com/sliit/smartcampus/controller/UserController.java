@@ -6,20 +6,10 @@ import com.sliit.smartcampus.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
-=======
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-import jakarta.servlet.http.HttpServletRequest;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 
 @RestController
 @RequestMapping("/api/users")
@@ -91,22 +81,9 @@ public class UserController {
     }
 
     @GetMapping
-<<<<<<< HEAD
     @org.springframework.security.access.prepost.PreAuthorize("hasRole('ADMIN')")
-=======
-    @PreAuthorize("hasRole('ADMIN')")
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
-<<<<<<< HEAD
-=======
-
-    @GetMapping("/auth-logs/stats")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Map<String, Object>> getAuthLogStats() {
-        return ResponseEntity.ok(userService.getAuthLogStats());
-    }
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 }

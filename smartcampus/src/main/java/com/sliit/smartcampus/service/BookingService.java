@@ -1,48 +1,6 @@
 package com.sliit.smartcampus.service;
 
 import com.sliit.smartcampus.model.Booking;
-<<<<<<< HEAD
-import com.sliit.smartcampus.repository.BookingRepository;
-import com.sliit.smartcampus.repository.UserRepository;
-import com.sliit.smartcampus.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-
-@Service
-public class BookingService {
-
-    private final BookingRepository bookingRepository;
-    private final NotificationService notificationService;
-    private final UserRepository userRepository;
-
-    @Autowired
-    public BookingService(BookingRepository bookingRepository, 
-                          NotificationService notificationService,
-                          UserRepository userRepository) {
-        this.bookingRepository = bookingRepository;
-        this.notificationService = notificationService;
-        this.userRepository = userRepository;
-    }
-
-    public Booking createBooking(Booking booking) {
-        if (booking.getStatus() == null) {
-            booking.setStatus("PENDING");
-        }
-        Booking savedBooking = bookingRepository.save(booking);
-        
-        // Notify the user that their booking request was received
-        sendBookingNotification(savedBooking, "Your booking request for " + savedBooking.getResourceName() + " has been received! 📅");
-        
-        return savedBooking;
-    }
-
-    public List<Booking> getMyBookings(String email) {
-        return bookingRepository.findByUserEmail(email);
-    }
-=======
 import com.sliit.smartcampus.model.Resource;
 import com.sliit.smartcampus.repository.BookingRepository;
 import com.sliit.smartcampus.repository.ResourceRepository;
@@ -64,23 +22,15 @@ public class BookingService {
 
     @Autowired
     private ResourceRepository resourceRepository;
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 
     public List<Booking> getAllBookings() {
         return bookingRepository.findAll();
     }
 
-<<<<<<< HEAD
     public void deleteBooking(Long id) {
         bookingRepository.deleteById(id);
     }
 
-    private void sendBookingNotification(Booking booking, String message) {
-        Optional<User> userOpt = userRepository.findByEmail(booking.getUserEmail());
-        if (userOpt.isPresent()) {
-            notificationService.createNotification(userOpt.get().getId(), message);
-        }
-=======
     public List<Booking> getBookingsByStatus(String status) {
         return bookingRepository.findByStatus(status);
     }
@@ -94,6 +44,10 @@ public class BookingService {
     }
 
     public List<Booking> getBookingsByEmail(String email) {
+        return bookingRepository.findByStudentEmail(email);
+    }
+
+    public List<Booking> getMyBookings(String email) {
         return bookingRepository.findByStudentEmail(email);
     }
 
@@ -206,9 +160,9 @@ public class BookingService {
         map.put("studentName", booking.getStudentName());
         map.put("studentEmail", booking.getStudentEmail());
         map.put("studentPhone", booking.getStudentPhone());
-        map.put("bookingDate", booking.getBookingDate().toString());
-        map.put("startTime", booking.getStartTime().toString());
-        map.put("endTime", booking.getEndTime().toString());
+        map.put("bookingDate", booking.getBookingDate() != null ? booking.getBookingDate().toString() : null);
+        map.put("startTime", booking.getStartTime() != null ? booking.getStartTime().toString() : null);
+        map.put("endTime", booking.getEndTime() != null ? booking.getEndTime().toString() : null);
         map.put("purpose", booking.getPurpose());
         map.put("status", booking.getStatus());
         map.put("attendees", booking.getAttendees());
@@ -229,6 +183,5 @@ public class BookingService {
         stats.put("totalRevenue", 0L);
         stats.put("satisfactionRate", 98);
         return stats;
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     }
 }

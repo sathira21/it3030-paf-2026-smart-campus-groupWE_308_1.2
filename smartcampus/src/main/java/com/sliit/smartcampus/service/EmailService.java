@@ -81,12 +81,7 @@ public class EmailService {
 
             helper.setText(htmlContent, true);
             javaMailSender.send(message);
-<<<<<<< HEAD
             logger.info("Login MFA email successfully sent to {}", toAddress);
-=======
-            logger.info("Login MFA email successfully sent to {}. CODE: [{}]", toAddress, otp);
-            System.out.println(">>> MFA VERIFICATION CODE FOR " + toAddress + ": " + otp);
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
             
         } catch (MessagingException e) {
             logger.error("Failed to send Login MFA email to {}", toAddress, e);

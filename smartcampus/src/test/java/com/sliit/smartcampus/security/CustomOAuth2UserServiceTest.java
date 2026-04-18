@@ -25,18 +25,11 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-<<<<<<< Updated upstream
-=======
 /**
  * Unit test for the CustomOAuth2UserService class.
-<<<<<<< HEAD
- * Validates the OAuth flow ensures correct role assignment based on domain/email.
-=======
  * Validates the OAuth flow ensures correct role assignment based on
  * domain/email.
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
  */
->>>>>>> Stashed changes
 @ExtendWith(MockitoExtension.class)
 class CustomOAuth2UserServiceTest {
 
@@ -47,11 +40,7 @@ class CustomOAuth2UserServiceTest {
 
     @BeforeEach
     void setUp() {
-<<<<<<< HEAD
-        customOAuth2UserService = Mockito.spy(new CustomOAuth2UserService(userRepository));
-=======
         customOAuth2UserService = Mockito.spy(new CustomOAuth2UserService(userRepository, "test-secret"));
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     }
 
     @Test
@@ -59,25 +48,16 @@ class CustomOAuth2UserServiceTest {
         // Arrange
         String adminEmail = "jane.doe@admin.smartcampus.com";
         OAuth2UserRequest mockRequest = mock(OAuth2UserRequest.class);
-<<<<<<< HEAD
-        
-=======
 
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("email", adminEmail);
         attributes.put("name", "Admin User");
         OAuth2User defaultUser = new DefaultOAuth2User(
                 Collections.singleton(new OAuth2UserAuthority(attributes)), attributes, "email");
-<<<<<<< HEAD
-        
-        doReturn(defaultUser).when((org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService) customOAuth2UserService).loadUser(any(OAuth2UserRequest.class));
-=======
 
         doReturn(defaultUser).when(
                 (org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService) customOAuth2UserService)
                 .loadUser(any(OAuth2UserRequest.class));
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 
         when(userRepository.findByEmail(adminEmail)).thenReturn(Optional.empty());
 
@@ -94,17 +74,10 @@ class CustomOAuth2UserServiceTest {
         assertTrue(resultUser instanceof CustomOAuth2User);
         CustomOAuth2User customOut = (CustomOAuth2User) resultUser;
         assertEquals(adminEmail, customOut.getEmail());
-<<<<<<< HEAD
-        
-        Collection<? extends GrantedAuthority> authorities = customOut.getAuthorities();
-        assertTrue(authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
-        
-=======
 
         Collection<? extends GrantedAuthority> authorities = customOut.getAuthorities();
         assertTrue(authorities.stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN")));
 
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         verify(userRepository, times(1)).save(any(User.class));
     }
 }

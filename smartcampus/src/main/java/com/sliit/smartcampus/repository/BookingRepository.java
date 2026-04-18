@@ -2,12 +2,6 @@ package com.sliit.smartcampus.repository;
 
 import com.sliit.smartcampus.model.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
-<<<<<<< HEAD
-import java.util.List;
-
-public interface BookingRepository extends JpaRepository<Booking, Long> {
-    List<Booking> findByUserEmail(String email);
-=======
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
@@ -27,5 +21,4 @@ public interface BookingRepository extends JpaRepository<Booking, Long> {
 
     @org.springframework.data.jpa.repository.Query("SELECT COUNT(b) FROM Booking b WHERE b.status = 'APPROVED' AND CAST(b.approvedAt AS date) = CAST(GETDATE() AS date)")
     long countApprovedToday();
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 }

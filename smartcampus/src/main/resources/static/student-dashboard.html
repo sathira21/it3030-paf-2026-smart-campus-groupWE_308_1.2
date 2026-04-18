@@ -631,20 +631,11 @@
         async function fetchBookings() {
             try {
                 const res = await fetch(`${API_URL}/bookings/my`, { headers });
-<<<<<<< HEAD
                 const data = await res.json();
                 const list = document.getElementById('booking-list');
                 const empty = document.getElementById('booking-empty');
                 
                 if (data.length === 0) {
-=======
-                const json = await res.json();
-                const data = json.data || json; // Handle wrapped response
-                const list = document.getElementById('booking-list');
-                const empty = document.getElementById('booking-empty');
-                
-                if (!Array.isArray(data) || data.length === 0) {
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
                     list.innerHTML = '';
                     empty.classList.remove('hidden');
                     return;

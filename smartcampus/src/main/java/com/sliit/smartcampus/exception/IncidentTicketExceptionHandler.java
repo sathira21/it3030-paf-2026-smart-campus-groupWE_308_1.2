@@ -5,10 +5,6 @@ import com.sliit.smartcampus.dto.TicketErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
-<<<<<<< HEAD
-=======
-import org.springframework.http.converter.HttpMessageNotReadableException;
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -105,18 +101,4 @@ public class IncidentTicketExceptionHandler {
         );
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
-<<<<<<< HEAD
-=======
-
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<TicketErrorResponse> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        TicketErrorResponse response = new TicketErrorResponse(
-                LocalDateTime.now(),
-                HttpStatus.BAD_REQUEST.value(),
-                "Malformed request body or invalid ticket data.",
-                Map.of("error", ex.getMostSpecificCause().getMessage())
-        );
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
->>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 }
