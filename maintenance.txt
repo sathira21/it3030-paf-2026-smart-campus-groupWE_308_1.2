@@ -33,3 +33,4 @@ Booking: Implement recurring booking support
 Tickets: Add priority levels to support requests
 Auth: Sanitize user input in login form
 Notifications: Add push notification fallback
+Facilities: Update building floor plan mapping
