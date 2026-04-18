@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(./mvnw.cmd clean *)",
+      "Bash(git fetch *)",
+      "Bash(git rev-list *)",
+      "Bash(./mvnw.cmd test *)",
+      "Bash(./mvnw.cmd spring-boot:run)",
+      "Bash(tee /tmp/backend.log)",
+      "Bash(npm run *)",
+      "Bash(powershell -NoProfile -Command 'Get-Service MSSQLSERVER,'\\\\''MSSQL$SQLEXPRESS'\\\\'',SQLEXPRESS 2>$null | Select-Object -Property Name,Status,StartType | Format-Table -AutoSize')",
+      "Bash(curl -sS -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\\\n\" http://localhost:3001/)"
+    ]
+  }
+}

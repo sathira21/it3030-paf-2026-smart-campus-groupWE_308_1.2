@@ -1,23 +1,20 @@
 package com.sliit.smartcampus.service;
 
 import com.sliit.smartcampus.dto.IncidentTicketRequest;
+import com.sliit.smartcampus.exception.CommentNotFoundException;
+import com.sliit.smartcampus.exception.CommentOwnershipException;
 import com.sliit.smartcampus.exception.InvalidTicketStateException;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
 import com.sliit.smartcampus.model.IncidentTicket;
 import com.sliit.smartcampus.model.TicketComment;
+import com.sliit.smartcampus.model.User;
 import com.sliit.smartcampus.repository.IncidentTicketRepository;
 import com.sliit.smartcampus.repository.TicketCommentRepository;
 import com.sliit.smartcampus.repository.UserRepository;
-import com.sliit.smartcampus.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.sliit.smartcampus.model.TicketStatus;
-import com.sliit.smartcampus.exception.TicketNotFoundException;
-import com.sliit.smartcampus.exception.InvalidTicketStateException;
-import com.sliit.smartcampus.exception.CommentNotFoundException;
-import com.sliit.smartcampus.exception.CommentOwnershipException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,7 +115,7 @@ public class IncidentTicketService {
 
     public void deleteTicket(Long id) {
         if (!incidentTicketRepository.existsById(id)) {
-            throw new RuntimeException("Ticket not found with id: " + id);
+            throw new TicketNotFoundException("Ticket not found with id: " + id);
         }
         incidentTicketRepository.deleteById(id);
     }

@@ -40,7 +40,7 @@ class CustomOAuth2UserServiceTest {
 
     @BeforeEach
     void setUp() {
-        customOAuth2UserService = Mockito.spy(new CustomOAuth2UserService(userRepository, "test-secret"));
+        customOAuth2UserService = Mockito.spy(new CustomOAuth2UserService(userRepository));
     }
 
     @Test
