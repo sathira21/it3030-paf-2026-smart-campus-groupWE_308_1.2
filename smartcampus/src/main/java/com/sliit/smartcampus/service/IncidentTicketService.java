@@ -1,6 +1,7 @@
 package com.sliit.smartcampus.service;
 
 import com.sliit.smartcampus.dto.IncidentTicketRequest;
+<<<<<<< HEAD
 import com.sliit.smartcampus.exception.InvalidTicketStateException;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
 import com.sliit.smartcampus.model.IncidentTicket;
@@ -16,6 +17,22 @@ import org.springframework.web.multipart.MultipartFile;
 import com.sliit.smartcampus.model.TicketStatus;
 import com.sliit.smartcampus.exception.TicketNotFoundException;
 import com.sliit.smartcampus.exception.InvalidTicketStateException;
+=======
+import com.sliit.smartcampus.dto.NotificationPayload;
+import com.sliit.smartcampus.model.IncidentTicket;
+import com.sliit.smartcampus.model.TicketComment;
+import com.sliit.smartcampus.model.User;
+import com.sliit.smartcampus.repository.IncidentTicketRepository;
+import com.sliit.smartcampus.repository.TicketCommentRepository;
+import com.sliit.smartcampus.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.sliit.smartcampus.exception.TicketNotFoundException;
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 import com.sliit.smartcampus.exception.CommentNotFoundException;
 import com.sliit.smartcampus.exception.CommentOwnershipException;
 import java.util.LinkedHashMap;
@@ -24,6 +41,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
+<<<<<<< HEAD
 public class IncidentTicketService {
 
     private final IncidentTicketRepository incidentTicketRepository;
@@ -31,18 +49,35 @@ public class IncidentTicketService {
     private final UserRepository userRepository;
     private final TicketCommentRepository ticketCommentRepository;
     private final FileStorageService fileStorageService;
+=======
+@Transactional
+public class IncidentTicketService {
+
+    private final IncidentTicketRepository incidentTicketRepository;
+    private final TicketCommentRepository ticketCommentRepository;
+    private final FileStorageService fileStorageService;
+    private final NotificationService notificationService;
+    private final UserRepository userRepository;
+    private final SimpMessagingTemplate messagingTemplate;
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 
     @Autowired
     public IncidentTicketService(IncidentTicketRepository incidentTicketRepository,
                                  NotificationService notificationService,
                                  UserRepository userRepository,
                                  TicketCommentRepository ticketCommentRepository,
+<<<<<<< HEAD
                                  FileStorageService fileStorageService) {
+=======
+                                 FileStorageService fileStorageService,
+                                 SimpMessagingTemplate messagingTemplate) {
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         this.incidentTicketRepository = incidentTicketRepository;
         this.notificationService = notificationService;
         this.userRepository = userRepository;
         this.ticketCommentRepository = ticketCommentRepository;
         this.fileStorageService = fileStorageService;
+<<<<<<< HEAD
     }
 
     public IncidentTicket createTicket(IncidentTicket ticket) {
@@ -53,12 +88,19 @@ public class IncidentTicketService {
     }
 
     public IncidentTicket createTicketFromRequest(IncidentTicketRequest request) {
+=======
+        this.messagingTemplate = messagingTemplate;
+    }
+
+    public IncidentTicket createTicket(IncidentTicketRequest request) {
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         IncidentTicket ticket = new IncidentTicket();
         ticket.setTitle(request.getTitle());
         ticket.setCategory(request.getCategory());
         ticket.setDescription(request.getDescription());
         ticket.setPriority(request.getPriority());
         ticket.setPreferredContact(request.getPreferredContact());
+<<<<<<< HEAD
         if (request.getStatus() != null) {
             ticket.setStatus(request.getStatus().name());
         } else {
@@ -67,13 +109,41 @@ public class IncidentTicketService {
         ticket.setCreatedBy(request.getCreatedBy());
         ticket.setRoomId(request.getRoomId());
 
+=======
+        ticket.setStatus(request.getStatus() != null ? request.getStatus().toString() : "OPEN");
+        ticket.setCreatedBy(request.getCreatedBy());
+        ticket.setRoomId(request.getRoomId());
+        
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         if (request.getImageAttachments() != null) {
             request.getImageAttachments().forEach(ticket::addImageAttachment);
         }
 
+<<<<<<< HEAD
         return incidentTicketRepository.save(ticket);
     }
 
+=======
+        IncidentTicket savedTicket = incidentTicketRepository.save(ticket);
+        notifyAdminsOfNewTicket(savedTicket);
+        return savedTicket;
+    }
+
+    private void notifyAdminsOfNewTicket(IncidentTicket ticket) {
+        List<User> admins = userRepository.findAllByRole("ADMIN");
+        String message = "New ticket #" + ticket.getId() + " submitted by " + ticket.getCreatedBy() + ".";
+        String title = "New Incident Reported";
+
+        for (User admin : admins) {
+            notificationService.createNotification(admin.getId(), message);
+        }
+
+        NotificationPayload payload = new NotificationPayload("INCIDENT_CREATED", title, message, "ADMIN");
+        messagingTemplate.convertAndSend("/topic/public", payload);
+    }
+
+    @Transactional(readOnly = true)
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     public List<IncidentTicket> getAllTickets() {
         return incidentTicketRepository.findAll();
     }
@@ -94,6 +164,7 @@ public class IncidentTicketService {
     }
 
     public IncidentTicket updateStatus(Long id, String newStatus) {
+<<<<<<< HEAD
         Optional<IncidentTicket> ticketOpt = incidentTicketRepository.findById(id);
         if (ticketOpt.isPresent()) {
             IncidentTicket ticket = ticketOpt.get();
@@ -114,6 +185,20 @@ public class IncidentTicketService {
             return updatedTicket;
         }
         throw new TicketNotFoundException("Ticket not found with id: " + id);
+=======
+        IncidentTicket ticket = incidentTicketRepository.findById(id)
+                .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
+        String oldStatus = ticket.getStatus();
+        ticket.setStatus(newStatus.toUpperCase());
+        IncidentTicket updatedTicket = incidentTicketRepository.save(ticket);
+
+        // Automatically notify the student of the status change
+        if (!newStatus.equalsIgnoreCase(oldStatus)) {
+            notifyUserOfStatusChange(updatedTicket);
+        }
+
+        return updatedTicket;
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     }
 
     public void deleteTicket(Long id) {
@@ -123,17 +208,27 @@ public class IncidentTicketService {
         incidentTicketRepository.deleteById(id);
     }
 
+<<<<<<< HEAD
     public IncidentTicket updateAssignment(Long id, String assignedTo, String notes) {
+=======
+    public IncidentTicket updateAssignment(Long id, String assignedTo) {
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         Optional<IncidentTicket> ticketOpt = incidentTicketRepository.findById(id);
         if (ticketOpt.isPresent()) {
             IncidentTicket ticket = ticketOpt.get();
             ticket.setAssignedTo(assignedTo);
+<<<<<<< HEAD
             if (notes != null) {
                 ticket.setResolutionNotes(notes);
             }
             return incidentTicketRepository.save(ticket);
         }
         throw new TicketNotFoundException("Ticket not found with id: " + id);
+=======
+            return incidentTicketRepository.save(ticket);
+        }
+        throw new RuntimeException("Ticket not found with id: "+ id);
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
     }
 
     /**

@@ -10,7 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
+<<<<<<< HEAD
 @CrossOrigin(origins = "*") // Added for standard development access
+=======
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
 public class NotificationController {
 
     private final NotificationService notificationService;

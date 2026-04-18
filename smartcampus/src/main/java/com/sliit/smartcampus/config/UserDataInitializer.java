@@ -31,7 +31,11 @@ public class UserDataInitializer {
             });
             userRepository.findByEmail("student@smartcampus.com").ifPresentOrElse(student -> {
                 student.setPassword(passwordEncoder.encode("password123"));
+<<<<<<< HEAD
                 student.setRole("USER");
+=======
+                student.setRole("STUDENT");
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
                 student.setEnabled(true);
                 userRepository.save(student);
                 System.out.println(">>>> Smart Campus Student Password Re-Hashed and Account Enabled.");
@@ -40,12 +44,17 @@ public class UserDataInitializer {
                 student.setName("Test Student");
                 student.setEmail("student@smartcampus.com");
                 student.setPassword(passwordEncoder.encode("password123"));
+<<<<<<< HEAD
                 student.setRole("USER");
+=======
+                student.setRole("STUDENT");
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
                 student.setEnabled(true);
                 userRepository.save(student);
                 System.out.println(">>>> Smart Campus Student User Initialized.");
             });
 
+<<<<<<< HEAD
             // Specific Admin Account for Testing MFA
             userRepository.findByEmail("udanten2@gmail.com").ifPresentOrElse(admin -> {
                 admin.setPassword(passwordEncoder.encode("password123"));
@@ -63,6 +72,27 @@ public class UserDataInitializer {
                 userRepository.save(admin);
                 System.out.println(">>>> MFA Test Admin (udanten2@gmail.com) Initialized.");
             });
+=======
+            // Specific Admin Account for Testing
+            String[] adminEmails = {"udanten2@gmail.com", "udenten2@gmail.com"};
+            for (String email : adminEmails) {
+                userRepository.findByEmail(email).ifPresentOrElse(admin -> {
+                    admin.setRole("ADMIN");
+                    admin.setEnabled(true);
+                    userRepository.save(admin);
+                    System.out.println(">>>> Admin (" + email + ") Role Verified/Updated.");
+                }, () -> {
+                    User admin = new User();
+                    admin.setName("System Admin");
+                    admin.setEmail(email);
+                    admin.setPassword(passwordEncoder.encode("password123"));
+                    admin.setRole("ADMIN");
+                    admin.setEnabled(true);
+                    userRepository.save(admin);
+                    System.out.println(">>>> Admin (" + email + ") Initialized.");
+                });
+            }
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
         };
     }
 }

@@ -1,0 +1,186 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -----------------------< com.sliit:smartcampus >------------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ smartcampus ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.14.1:compile (default-compile) @ smartcampus ---
+[INFO] Recompiling the module because of added or removed source files.
+[INFO] Compiling 62 source files with javac [debug parameters release 17] to target\classes
+[INFO] Some messages have been simplified; recompile with -Xdiags:verbose to get full output
+[INFO] -------------------------------------------------------------
+[ERROR] COMPILATION ERROR : 
+[INFO] -------------------------------------------------------------
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[3,35] cannot find symbol
+  symbol:   class Resource
+  location: package com.sliit.smartcampus.model
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[4,37] cannot find symbol
+  symbol:   class ResourceService
+  location: package com.sliit.smartcampus.service
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[23,13] cannot find symbol
+  symbol:   class ResourceService
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[34,22] invalid method reference
+  cannot find symbol
+    symbol:   method convertToMap()
+    location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[46,48] cannot find symbol
+  symbol:   method getPendingBookings()
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[48,22] invalid method reference
+  cannot find symbol
+    symbol:   method convertToMap()
+    location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[60,48] cannot find symbol
+  symbol:   method getBookingsByEmail(java.lang.String)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[62,22] invalid method reference
+  cannot find symbol
+    symbol:   method convertToMap()
+    location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[76,60] incompatible types: java.util.Map<java.lang.String,java.lang.Object> cannot be converted to com.sliit.smartcampus.model.Booking
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[88,48] cannot find symbol
+  symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[111,45] cannot find symbol
+  symbol:   method approveBooking(java.lang.Long,java.lang.String)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[122,48] cannot find symbol
+  symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[139,45] cannot find symbol
+  symbol:   method rejectBooking(java.lang.Long,java.lang.String,java.lang.String)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[150,48] cannot find symbol
+  symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[165,41] cannot find symbol
+  symbol:   method cancelBooking(java.lang.Long,java.lang.String)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[176,44] cannot find symbol
+  symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[183,51] cannot find symbol
+  symbol:   method getDashboardStats()
+  location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[27,14] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[40,14] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[53,9] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[69,14] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[82,14] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[95,14] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[132,9] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[178,9] cannot find symbol
+  symbol:   class Resource
+  location: class com.sliit.smartcampus.controller.ResourceController
+[INFO] 25 errors 
+[INFO] -------------------------------------------------------------
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  8.219 s
+[INFO] Finished at: 2026-04-14T00:09:48+05:30
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.14.1:compile (default-compile) on project smartcampus: Compilation failure: Compilation failure: 
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[3,35] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: package com.sliit.smartcampus.model
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[4,37] cannot find symbol
+[ERROR]   symbol:   class ResourceService
+[ERROR]   location: package com.sliit.smartcampus.service
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[23,13] cannot find symbol
+[ERROR]   symbol:   class ResourceService
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[34,22] invalid method reference
+[ERROR]   cannot find symbol
+[ERROR]     symbol:   method convertToMap()
+[ERROR]     location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[46,48] cannot find symbol
+[ERROR]   symbol:   method getPendingBookings()
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[48,22] invalid method reference
+[ERROR]   cannot find symbol
+[ERROR]     symbol:   method convertToMap()
+[ERROR]     location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[60,48] cannot find symbol
+[ERROR]   symbol:   method getBookingsByEmail(java.lang.String)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[62,22] invalid method reference
+[ERROR]   cannot find symbol
+[ERROR]     symbol:   method convertToMap()
+[ERROR]     location: class com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[76,60] incompatible types: java.util.Map<java.lang.String,java.lang.Object> cannot be converted to com.sliit.smartcampus.model.Booking
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[88,48] cannot find symbol
+[ERROR]   symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[111,45] cannot find symbol
+[ERROR]   symbol:   method approveBooking(java.lang.Long,java.lang.String)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[122,48] cannot find symbol
+[ERROR]   symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[139,45] cannot find symbol
+[ERROR]   symbol:   method rejectBooking(java.lang.Long,java.lang.String,java.lang.String)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[150,48] cannot find symbol
+[ERROR]   symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[165,41] cannot find symbol
+[ERROR]   symbol:   method cancelBooking(java.lang.Long,java.lang.String)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[176,44] cannot find symbol
+[ERROR]   symbol:   method convertToMap(com.sliit.smartcampus.model.Booking)
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/BookingController.java:[183,51] cannot find symbol
+[ERROR]   symbol:   method getDashboardStats()
+[ERROR]   location: variable bookingService of type com.sliit.smartcampus.service.BookingService
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[27,14] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[40,14] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[53,9] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[69,14] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[82,14] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[95,14] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[132,9] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] /D:/Y3S1-ITPM/it3030-paf-2026-smart-campus-groupWE_308_1.2/smartcampus/src/main/java/com/sliit/smartcampus/controller/ResourceController.java:[178,9] cannot find symbol
+[ERROR]   symbol:   class Resource
+[ERROR]   location: class com.sliit.smartcampus.controller.ResourceController
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

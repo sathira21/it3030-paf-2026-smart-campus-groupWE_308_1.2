@@ -29,10 +29,23 @@ public class JwtTokenProvider {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
+<<<<<<< HEAD
         return Jwts.builder()
                 .setSubject(userPrincipal.getEmail())
                 .claim("userId", userPrincipal.getId())
                 .claim("roles", authentication.getAuthorities().toString())
+=======
+        String role = "STUDENT";
+        if (userPrincipal.getAuthorities() != null && !userPrincipal.getAuthorities().isEmpty()) {
+            role = userPrincipal.getAuthorities().iterator().next().getAuthority().replace("ROLE_", "");
+        }
+
+        return Jwts.builder()
+                .setSubject(userPrincipal.getEmail())
+                .claim("userId", userPrincipal.getId())
+                .claim("roles", userPrincipal.getAuthorities().toString())
+                .claim("role", role)
+>>>>>>> 91c028da84f00334ed183a773fef20bb2d67e092
                 .setIssuedAt(new Date())
                 .setExpiration(expiryDate)
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
