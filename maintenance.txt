@@ -1,2 +1,3 @@
 Initial maintenance log
 Cleanup unnecessary temporary files
+Update project documentation references
