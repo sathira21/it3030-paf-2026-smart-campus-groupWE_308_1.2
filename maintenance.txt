@@ -54,3 +54,4 @@ Notifications: Add multi-channel support (SMS and Email)
 Notifications: Optimize notification delivery queue
 Notifications: Implement read/unread status tracking
 Notifications: Design personalized notification dashboard
+Notifications: Fix notification preferences persistence
