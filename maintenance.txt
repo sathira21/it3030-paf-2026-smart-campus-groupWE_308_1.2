@@ -47,3 +47,4 @@ Auth: Implement multi-factor authentication for admin logins
 Auth: Refactor JWT middleware for better security
 Auth: Update session timeout handling
 Auth: Secure password reset flow with temporary tokens
+Auth: Add audit logging for failed login attempts
