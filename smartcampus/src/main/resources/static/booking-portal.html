@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus — Student Booking Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #f2f6fa; color: #1e293b; min-height: 100vh; overflow-x: hidden; }
+        .bg-dots { background-color: transparent; background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px); background-size: 24px 24px; }
+        .text-gradient { background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .premium-card { background: #ffffff; border-radius: 32px; border: 1px solid rgba(255, 255, 255, 0.7); box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.08); transition: all 0.3s ease; }
+        .premium-card:hover { transform: translateY(-4px); box-shadow: 0 50px 110px -20px rgba(0, 0, 0, 0.1); }
+        .category-tab { padding: 12px 24px; border-radius: 20px; font-size: 13px; font-weight: 800; cursor: pointer; transition: all 0.2s ease; border: 1px solid transparent; white-space: nowrap; }
+        .category-tab.active { background: #3b82f6; color: white; box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2); }
+        .category-tab:not(.active) { color: #64748b; background: white; border-color: #e2e8f0; }
+        .slot-btn { padding: 12px; border-radius: 16px; border: 2px solid #f1f5f9; font-size: 13px; font-weight: 700; transition: all 0.2s; }
+        .slot-btn:not(:disabled):hover { border-color: #3b82f6; background: #eff6ff; }
+        .slot-btn.selected { background: #3b82f6; color: white; border-color: #3b82f6; box-shadow: 0 8px 15px rgba(59,130,246,0.2); }
+        .slot-btn:disabled { background: #f8fafc; color: #cbd5e1; cursor: not-allowed; border-color: #f1f5f9; text-decoration: line-through; }
+        .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.show { opacity: 1; pointer-events: auto; }
+        .modal-body { background: white; border-radius: 32px; width: 95%; max-width: 700px; padding: 40px; transform: scale(0.9); transition: all 0.3s ease; max-height: 90vh; overflow-y: auto; }
+        .modal.show .modal-body { transform: scale(1); }
+    </style>
+</head>
+<body class="bg-dots">
+    <header class="sticky top-0 z-40 px-8 py-5 flex items-center justify-between border-b border-slate-100 bg-white/80 backdrop-blur-md">
+        <div class="flex items-center gap-4">
+            <div class="w-[42px] h-[42px] bg-white rounded-[12px] flex items-center justify-center shadow-sm border border-slate-100">
+                <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 14l9-5-9-5-9 5 9 5z"/><path d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>
+            </div>
+            <div>
+                <span class="text-xl font-black text-slate-900 tracking-tight leading-none block">Smart Campus</span>
+                <span class="text-[10px] font-bold text-blue-600 uppercase tracking-widest mt-1">Student Portal</span>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <a href="student-dashboard.html" class="text-sm font-bold text-slate-500 hover:text-blue-600">My Incidents</a>
+            <div class="w-px h-6 bg-slate-200"></div>
+            <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-black">S</div>
+        </div>
+    </header>
+
+    <main class="max-w-[1200px] mx-auto px-8 py-10">
+        <div class="mb-12 text-center">
+            <h1 class="text-5xl font-black text-slate-900 tracking-tight mb-4">Reserve a <span class="text-gradient">Space</span></h1>
+            <p class="text-slate-500 font-medium text-lg">Browse lecture halls, labs, and study rooms for your academic needs.</p>
+        </div>
+
+        <!-- Search & Filter -->
+        <div class="flex flex-col md:flex-row gap-6 mb-12">
+            <div class="flex-1 relative">
+                <svg class="w-5 h-5 text-slate-400 absolute left-5 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                <input type="text" id="search-input" oninput="handleSearch()" placeholder="Search resources..." class="w-full pl-14 pr-6 py-4 rounded-2xl bg-white border border-slate-100 shadow-sm outline-none focus:border-blue-500 transition-all">
+            </div>
+            <div class="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                <button class="category-tab active" onclick="setCategory('ALL')">All</button>
+                <button class="category-tab" onclick="setCategory('LECTURE_HALL')">Lecture Halls</button>
+                <button class="category-tab" onclick="setCategory('LAB')">Labs</button>
+                <button class="category-tab" onclick="setCategory('MEETING_ROOM')">Study Rooms</button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="resource-grid">
+            <!-- Resources Load Here -->
+        </div>
+    </main>
+
+    <!-- Booking Modal -->
+    <div id="booking-modal" class="modal">
+        <div class="modal-body">
+            <div class="flex items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl font-black text-slate-900" id="modal-resource-name">Book Space</h2>
+                    <p class="text-slate-400 text-sm font-medium" id="modal-resource-loc"></p>
+                </div>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-all"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+
+            <form id="booking-form" class="space-y-6">
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Student Name</label>
+                        <input type="text" id="studentName" required class="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Email Address</label>
+                        <input type="email" id="studentEmail" required class="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Booking Date</label>
+                        <input type="date" id="bookingDate" required onchange="loadSlots()" class="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Attendees</label>
+                        <input type="number" id="attendees" value="1" min="1" required class="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <label class="block text-xs font-black uppercase tracking-widest text-slate-400">Select Time Slot</label>
+                        <span class="text-[9px] font-black bg-amber-50 text-amber-600 px-2 py-0.5 rounded-full border border-amber-100 uppercase tracking-tighter">Strictly 2 Hours</span>
+                    </div>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-3" id="slot-grid">
+                        <!-- Slots load here -->
+                    </div>
+                    <input type="hidden" id="startTime">
+                    <input type="hidden" id="endTime">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-black uppercase tracking-widest text-slate-400 mb-2">Purpose of Booking</label>
+                    <textarea id="purpose" required rows="3" placeholder="e.g., Study group, Project discussion..." class="w-full px-5 py-3 rounded-xl border border-slate-200 outline-none focus:border-blue-500"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-5 bg-blue-600 text-white rounded-2xl font-black text-lg shadow-xl shadow-blue-100 transition-all hover:bg-blue-700">Submit Booking Request</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        let resources = [];
+        let category = 'ALL';
+        let selectedResource = null;
+        const timeSlots = [
+            { start: '08:00', end: '10:00', label: '08:00 - 10:00' },
+            { start: '10:00', end: '12:00', label: '10:00 - 12:00' },
+            { start: '12:00', end: '14:00', label: '12:00 - 14:00' },
+            { start: '14:00', end: '16:00', label: '14:00 - 16:00' },
+            { start: '16:00', end: '18:00', label: '16:00 - 18:00' }
+        ];
+
+        async function fetchResources() {
+            const res = await fetch(`${API_URL}/resources/active`);
+            const data = await res.json();
+            resources = data.data || [];
+            renderResources();
+        }
+
+        function setCategory(c) {
+            category = c;
+            document.querySelectorAll('.category-tab').forEach(t => t.classList.toggle('active', t.innerText.replace(' ', '_').toUpperCase().includes(c) || (c==='ALL' && t.innerText === 'All')));
+            renderResources();
+        }
+
+        function handleSearch() { renderResources(); }
+
+        function renderResources() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const filtered = resources.filter(r => 
+                (category === 'ALL' || r.type === category) &&
+                (r.name.toLowerCase().includes(query) || r.location.toLowerCase().includes(query))
+            );
+
+            document.getElementById('resource-grid').innerHTML = filtered.map(r => `
+                <div class="premium-card overflow-hidden group">
+                    <div class="h-48 bg-slate-100 bg-cover bg-center transition-transform duration-500 group-hover:scale-110" style="background-image: url('${r.images?.[0] || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400'}')"></div>
+                    <div class="p-8 relative bg-white">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="text-xl font-black text-slate-900 leading-tight">${r.name}</h4>
+                                <p class="text-[12px] text-slate-400 font-bold uppercase tracking-widest mt-1">${r.location}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4 text-xs font-bold text-slate-500 mb-6">
+                            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>${r.capacity} Seats</span>
+                            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>2h Slots</span>
+                        </div>
+                        <button onclick="openBookingModal(${r.id})" class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold transition-all hover:bg-blue-600 hover:shadow-lg hover:shadow-blue-200">Book Space</button>
+                    </div>
+                </div>
+            `).join('') || '<div class="col-span-full text-center py-20 text-slate-400 font-medium">No resources found matching your criteria.</div>';
+        }
+
+        function openBookingModal(id) {
+            selectedResource = resources.find(r => r.id === id);
+            document.getElementById('modal-resource-name').innerText = selectedResource.name;
+            document.getElementById('modal-resource-loc').innerText = selectedResource.location;
+            document.getElementById('booking-form').reset();
+            document.getElementById('slot-grid').innerHTML = '';
+            document.getElementById('booking-modal').classList.add('show');
+            document.getElementById('bookingDate').min = new Date().toISOString().split('T')[0];
+        }
+
+        function closeModal() { document.getElementById('booking-modal').classList.remove('show'); }
+
+        async function loadSlots() {
+            const date = document.getElementById('bookingDate').value;
+            if (!date) return;
+            
+            // In a real app, fetch booked slots from API
+            // For now, let's assume they are all available
+            document.getElementById('slot-grid').innerHTML = timeSlots.map((s, i) => `
+                <button type="button" onclick="selectSlot('${s.start}', '${s.end}', this)" class="slot-btn">${s.label}</button>
+            `).join('');
+        }
+
+        function selectSlot(start, end, btn) {
+            document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            document.getElementById('startTime').value = start;
+            document.getElementById('endTime').value = end;
+        }
+
+        document.getElementById('booking-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const start = document.getElementById('startTime').value;
+            if (!start) { alert("Please select a time slot"); return; }
+
+            const payload = {
+                resourceId: selectedResource.id,
+                studentName: document.getElementById('studentName').value,
+                studentEmail: document.getElementById('studentEmail').value,
+                bookingDate: document.getElementById('bookingDate').value,
+                startTime: start,
+                endTime: document.getElementById('endTime').value,
+                attendees: document.getElementById('attendees').value,
+                purpose: document.getElementById('purpose').value
+            };
+
+            try {
+                const res = await fetch(`${API_URL}/bookings`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert(`Success! Your booking reference is: ${data.data.bookingReference}`);
+                    closeModal();
+                } else {
+                    alert(`Error: ${data.message}`);
+                }
+            } catch (err) { alert("Network error"); }
+        }
+
+        fetchResources();
+    </script>
+</body>
+</html>

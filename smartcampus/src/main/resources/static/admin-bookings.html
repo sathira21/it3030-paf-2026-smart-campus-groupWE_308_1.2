@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Campus — Booking Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background-color: #f8fafc; color: #1e293b; min-height: 100vh; overflow-x: hidden; }
+        .bg-dots { background-color: transparent; background-image: radial-gradient(#cbd5e1 1.2px, transparent 1.2px); background-size: 24px 24px; }
+        .premium-card { background: #ffffff; border-radius: 24px; border: 1px solid #f1f5f9; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.04); transition: all 0.3s ease; }
+        .filter-tab { padding: 10px 24px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s ease; color: #64748b; }
+        .filter-tab.active { background: #f59e0b; color: white; box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2); }
+        .search-pill { background: white; border-radius: 999px; border: 1px solid #e2e8f0; padding: 4px; display: flex; align-items: center; width: 100%; max-width: 500px; }
+        .badge-pending { background: #fff7ed; color: #c2410c; border: 1px solid #ffedd5; }
+        .badge-approved { background: #ecfdf5; color: #047857; border: 1px solid #d1fae5; }
+        .badge-rejected { background: #fef2f2; color: #b91c1c; border: 1px solid #fee2e2; }
+        .modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.3s ease; }
+        .modal.show { opacity: 1; pointer-events: auto; }
+        .modal-body { background: white; border-radius: 32px; width: 95%; max-width: 600px; padding: 40px; transform: scale(0.9); transition: all 0.3s ease; max-height: 90vh; overflow-y: auto; }
+        .modal.show .modal-body { transform: scale(1); }
+        /* Time Slot Styles */
+        .slot-btn { border-radius: 14px; padding: 12px 16px; font-weight: 700; font-size: 13px; cursor: pointer; border: 2px solid transparent; transition: all 0.2s ease; display: flex; align-items: center; justify-content: space-between; }
+        .slot-available { background: #f0fdf4; border-color: #86efac; color: #15803d; }
+        .slot-available:hover { background: #dcfce7; border-color: #4ade80; transform: translateY(-1px); }
+        .slot-pending { background: #fffbeb; border-color: #fcd34d; color: #92400e; cursor: not-allowed; }
+        .slot-booked { background: #fef2f2; border-color: #fca5a5; color: #991b1b; cursor: not-allowed; }
+        .slot-selected { background: #4f46e5; border-color: #4f46e5; color: white; box-shadow: 0 4px 12px rgba(79,70,229,0.35); }
+    </style>
+</head>
+<body class="bg-dots">
+    <header class="px-8 py-4 flex items-center justify-between bg-white border-b border-slate-100">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center shadow-lg shadow-amber-200">
+                <svg class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+            </div>
+            <div>
+                <h1 class="text-lg font-black text-slate-900 leading-none">Booking Hub</h1>
+                <p class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Campus Reservations & Logistics</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-6">
+            <button onclick="localStorage.removeItem('jwt_token'); window.location.href='/index.html';" class="text-xs font-black text-rose-500 hover:text-rose-600 uppercase tracking-widest">Logout</button>
+            <div class="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center">
+                <svg class="w-4 h-4 text-slate-600" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-8 py-10">
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-4 gap-6 mb-8">
+            <div class="premium-card p-6">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Total Bookings</p>
+                <h3 class="text-2xl font-black text-slate-900" id="stat-total">0</h3>
+            </div>
+            <div class="premium-card p-6">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Pending</p>
+                <h3 class="text-2xl font-black text-amber-500" id="stat-pending">0</h3>
+            </div>
+            <div class="premium-card p-6">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Approved</p>
+                <h3 class="text-2xl font-black text-emerald-500" id="stat-approved">0</h3>
+            </div>
+            <div class="premium-card p-6">
+                <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">Resources</p>
+                <h3 class="text-2xl font-black text-blue-600" id="stat-resources">0</h3>
+            </div>
+        </div>
+
+        <!-- Filter Navigation -->
+        <div class="bg-white rounded-2xl p-2 flex gap-4 mb-8 shadow-sm border border-slate-100">
+            <button class="filter-tab active" id="tab-PENDING" onclick="setFilter('PENDING')">Request Queue</button>
+            <button class="filter-tab" id="tab-ALL" onclick="setFilter('ALL')">Audit Log</button>
+            <button class="filter-tab" id="tab-APPROVED" onclick="setFilter('APPROVED')">Confirmed</button>
+            <button class="filter-tab" id="tab-REJECTED" onclick="setFilter('REJECTED')">Declined</button>
+            <button class="filter-tab" id="tab-RESOURCES" onclick="setFilter('RESOURCES')">Resources Database</button>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex items-center justify-between gap-4 mb-8">
+            <div class="search-pill">
+                <div class="flex items-center px-4">
+                    <svg class="w-5 h-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                </div>
+                <input type="text" id="search-input" oninput="render()" placeholder="Search by student, resource or ID..." class="flex-1 bg-transparent py-3 outline-none text-sm text-slate-600 font-medium">
+            </div>
+            <div class="flex items-center gap-4">
+                <select id="type-filter" onchange="render()" class="hidden px-5 py-3 rounded-2xl border border-slate-200 outline-none text-sm font-bold bg-white focus:border-blue-500">
+                    <option value="ALL">All Resource Types</option>
+                    <option value="LECTURE_HALL">Lecture Halls</option>
+                    <option value="LAB">Labs</option>
+                    <option value="MEETING_ROOM">Meeting Rooms</option>
+                </select>
+                <button onclick="fetchData()" class="px-5 py-3 text-sm font-bold text-blue-600 flex items-center gap-2 hover:bg-blue-50 rounded-2xl transition-all">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg> Refresh
+                </button>
+                <button id="add-resource-btn" onclick="openResourceModal()" class="hidden px-7 py-3 bg-blue-600 text-white rounded-2xl font-black text-sm shadow-lg shadow-blue-200 hover:scale-[1.02] active:scale-95 transition-all flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3"><path d="M12 4v16m8-8H4"/></svg> Add New Resource
+                </button>
+            </div>
+        </div>
+
+        <!-- Content Area -->
+        <div id="booking-list" class="space-y-4 min-h-[400px]">
+            <!-- Table content here -->
+        </div>
+    </main>
+
+    <!-- Resource Modal -->
+    <div id="resource-modal" class="modal">
+        <div class="modal-body !max-w-[700px]">
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-blue-600/10 rounded-xl flex items-center justify-center">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 4v16m8-8H4"/></svg>
+                    </div>
+                    <div>
+                        <h2 class="text-xl font-black text-slate-900 leading-none" id="modal-title">Create New Resource</h2>
+                        <p class="text-[11px] font-bold text-slate-400 mt-1 uppercase tracking-wider">Add a new facility or equipment to the catalogue</p>
+                    </div>
+                </div>
+                <button onclick="closeResourceModal()" class="text-slate-400 hover:text-slate-600"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+
+            <form id="resource-form" class="space-y-6">
+                <input type="hidden" id="edit-id">
+                
+                <!-- Image Upload Zone -->
+                <div class="border-2 border-dashed border-blue-100 rounded-2xl bg-blue-50/5 relative" id="dropzone">
+                    <!-- Clickable area to pick ONE image -->
+                    <label for="image-input" id="upload-prompt" class="flex flex-col items-center justify-center p-8 cursor-pointer hover:bg-blue-50/40 transition-all rounded-2xl gap-3">
+                        <div class="w-14 h-14 bg-white rounded-full shadow border border-slate-100 flex items-center justify-center">
+                            <svg class="w-7 h-7 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.8"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        </div>
+                        <div class="text-center">
+                            <p class="font-bold text-slate-700 text-sm">Click to choose an image</p>
+                            <p class="text-xs text-slate-400 mt-0.5">JPG, PNG or WEBP</p>
+                        </div>
+                        <span class="px-5 py-2 bg-blue-600 text-white rounded-xl font-bold text-sm shadow pointer-events-none">Browse Files</span>
+                    </label>
+                    <!-- Image preview (shown after selection) -->
+                    <div id="preview-area" class="hidden flex-col items-center gap-3 p-5">
+                        <div class="relative w-full h-40 rounded-xl overflow-hidden border border-slate-200">
+                            <img id="preview-img" src="" class="w-full h-full object-cover">
+                            <button type="button" onclick="clearImage()" class="absolute top-2 right-2 bg-white rounded-full p-1.5 shadow text-rose-500 hover:bg-rose-50 transition">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <label for="image-input" class="inline-flex items-center gap-2 px-4 py-2 text-sm font-bold text-blue-600 border border-blue-200 rounded-xl cursor-pointer hover:bg-blue-50 transition">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                            Change Image
+                        </label>
+                    </div>
+                    <input type="file" id="image-input" class="sr-only" accept="image/*" onchange="handleImageSelect()">
+                </div>
+
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Resource Name <span class="text-rose-500">*</span></label>
+                        <input type="text" id="name" required placeholder="e.g., Main Auditorium" class="w-full px-5 py-3 rounded-2xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Resource Type <span class="text-rose-500">*</span></label>
+                        <select id="type" class="w-full px-5 py-3 rounded-2xl border border-slate-200 outline-none focus:border-blue-500 bg-white">
+                            <option value="LECTURE_HALL">🏛️ Lecture Hall</option>
+                            <option value="LAB">💻 Computer Lab</option>
+                            <option value="MEETING_ROOM">🤝 Meeting Room</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Capacity <span class="text-rose-500">*</span></label>
+                        <input type="number" id="capacity" required min="1" oninput="if(this.value < 1) this.value = 1" class="w-full px-5 py-3 rounded-2xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50 text-blue-600 font-bold">
+                    </div>
+                    <div>
+                        <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Location <span class="text-rose-500">*</span></label>
+                        <input type="text" id="location" required placeholder="e.g., Block B, Floor 2" class="w-full px-5 py-3 rounded-2xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50">
+                    </div>
+                    <div class="col-span-2">
+                        <div class="flex justify-between items-center mb-2">
+                            <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400">Description <span class="text-rose-500">*</span></label>
+                            <span id="char-count" class="text-[10px] font-bold text-slate-450">0 letters (min 20)</span>
+                        </div>
+                        <textarea id="description" rows="3" oninput="updateCharCount()" placeholder="Describe the facility's features..." class="w-full px-5 py-3 rounded-2xl border border-slate-200 outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-50"></textarea>
+                    </div>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-5 bg-blue-600 text-white rounded-[24px] font-black text-lg shadow-2xl shadow-blue-200 hover:scale-[1.01] active:scale-95 transition-all">Create New Resource</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Book Now Modal -->
+    <div id="book-modal" class="modal">
+        <div class="modal-body !max-w-[560px]">
+            <div class="flex items-center justify-between mb-1">
+                <div>
+                    <h2 class="text-xl font-black text-slate-900" id="book-modal-title">Book Resource</h2>
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mt-0.5" id="book-modal-subtitle">Select a 2-hour time slot (8AM – 6PM)</p>
+                </div>
+                <button onclick="closeBookModal()" class="text-slate-400 hover:text-slate-600 ml-4 shrink-0"><svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 18L18 6M6 6l12 12"/></svg></button>
+            </div>
+
+            <form id="book-form" onsubmit="submitBooking(event)" class="space-y-4 mt-5">
+                <!-- Step 1: Your Info -->
+                <div class="bg-slate-50 rounded-2xl p-4">
+                    <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-3">👤 Your Information</p>
+                    <div class="grid grid-cols-2 gap-3">
+                        <input type="text" id="bk-name" required placeholder="Full Name *" class="px-4 py-2.5 text-sm font-semibold rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-50 col-span-1">
+                        <input type="email" id="bk-email" required placeholder="Email Address *" class="px-4 py-2.5 text-sm font-semibold rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-50 col-span-1">
+                        <input type="tel" id="bk-phone" placeholder="Phone Number *" class="px-4 py-2.5 text-sm font-semibold rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 col-span-2">
+                    </div>
+                </div>
+
+                <!-- Step 2: Date -->
+                <div>
+                    <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Select Date *</label>
+                    <input type="date" id="bk-date" required onchange="refreshSlots()" class="w-full px-4 py-3 text-sm font-bold text-slate-700 rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-50">
+                </div>
+
+                <!-- Step 3: Time Slots -->
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <label class="text-[11px] font-black uppercase tracking-widest text-slate-400">Select 2-Hour Time Slot *</label>
+                        <div class="flex items-center gap-3 text-[10px] font-bold">
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span> Available</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-yellow-400 inline-block"></span> Pending</span>
+                            <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-red-400 inline-block"></span> Booked</span>
+                        </div>
+                    </div>
+                    <div id="slot-grid" class="grid grid-cols-2 gap-2">
+                        <p class="col-span-2 text-center text-slate-400 text-sm py-4">Pick a date to see availability</p>
+                    </div>
+                    <input type="hidden" id="bk-start" required>
+                    <input type="hidden" id="bk-end" required>
+                    <p class="text-xs mt-2 text-right font-bold text-slate-400" id="slot-selection-label"></p>
+                </div>
+
+                <!-- Step 4: Purpose -->
+                <div>
+                    <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Purpose of Booking *</label>
+                    <input type="text" id="bk-purpose" required placeholder="e.g., Study Session, Lecture, Club meeting" class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 focus:ring-2 focus:ring-indigo-50">
+                </div>
+
+                <!-- Step 5: Special Requests -->
+                <div>
+                    <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Special Requests <span class="text-slate-300 normal-case font-normal">(optional)</span></label>
+                    <textarea id="bk-special" rows="2" placeholder="e.g., Projector, microphone, accessible seating..." class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-slate-200 bg-white outline-none focus:border-indigo-400 resize-none"></textarea>
+                </div>
+
+                <!-- Terms + Submit -->
+                <div class="flex items-start gap-3">
+                    <input type="checkbox" id="bk-terms" required class="mt-1 w-4 h-4 accent-indigo-600 cursor-pointer">
+                    <label for="bk-terms" class="text-xs font-semibold text-slate-500 cursor-pointer">I agree to the <span class="text-indigo-600 underline">terms and conditions</span> of campus facility usage.</label>
+                </div>
+
+                <button type="submit" id="book-submit-btn" class="w-full py-4 bg-indigo-600 hover:bg-indigo-700 active:scale-95 text-white rounded-2xl font-black text-base shadow-xl shadow-indigo-100 transition-all flex items-center justify-center gap-2 disabled:opacity-50">
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    Book 2-Hour Slot
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Approve Confirm Modal -->
+    <div id="approve-modal" class="modal">
+        <div class="modal-body !max-w-[440px]">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h2 class="text-xl font-black text-slate-900">Approve Booking</h2>
+                <p class="text-sm text-slate-500 mt-1">Confirm approval for this booking request</p>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 mb-6 space-y-2" id="approve-details">
+                <!-- filled by JS -->
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeApproveModal()" class="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all">Cancel</button>
+                <button onclick="confirmApprove()" class="flex-1 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-700 text-white font-black shadow-lg shadow-emerald-100 transition-all">Approve Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reject Modal -->
+    <div id="reject-modal" class="modal">
+        <div class="modal-body !max-w-[440px]">
+            <div class="text-center mb-6">
+                <div class="w-16 h-16 bg-rose-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="w-8 h-8 text-rose-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h2 class="text-xl font-black text-slate-900">Reject Booking</h2>
+                <p class="text-sm text-slate-500 mt-1">Provide a reason for declining this request</p>
+            </div>
+            <div class="bg-slate-50 rounded-2xl p-4 mb-4 space-y-2" id="reject-details"></div>
+            <div class="mb-5">
+                <label class="block text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">Rejection Reason *</label>
+                <textarea id="reject-reason" rows="3" placeholder="e.g., Room not available for maintenance, Overlapping event..." class="w-full px-4 py-3 text-sm font-semibold rounded-xl border border-slate-200 outline-none focus:border-rose-400 resize-none"></textarea>
+            </div>
+            <div class="flex gap-3">
+                <button onclick="closeRejectModal()" class="flex-1 py-3 rounded-2xl border-2 border-slate-200 text-slate-600 font-bold hover:bg-slate-50 transition-all">Cancel</button>
+                <button onclick="confirmReject()" class="flex-1 py-3 rounded-2xl bg-rose-600 hover:bg-rose-700 text-white font-black shadow-lg shadow-rose-100 transition-all">Decline Request</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = '/api';
+        const token = localStorage.getItem('jwt_token');
+
+        if (!token) window.location.href = '/index.html';
+
+        const authHeaders = { 
+            'Authorization': `Bearer ${token}`
+            // We do not set Content-Type globally because FormData (when uploading images) needs to boundary autodetect!
+            // We will inject Content-Type explicitly for JSON requests.
+        };
+        const jsonHeaders = { ...authHeaders, 'Content-Type': 'application/json' };
+
+        let allBookings = [];
+        let allResources = [];
+        let selectedFiles = [];
+        let currentFilter = 'PENDING';
+        let activeBookingModeResourceId = null;
+
+        async function fetchData() {
+            try {
+                const [bRes, rRes] = await Promise.all([
+                    fetch(`${API_URL}/bookings`, { headers: jsonHeaders }),
+                    fetch(`${API_URL}/resources`, { headers: jsonHeaders })
+                ]);
+                
+                if (bRes.status === 401) {
+                    localStorage.removeItem('jwt_token');
+                    window.location.href = '/index.html';
+                    return;
+                }
+
+                const bData = await bRes.json();
+                const rData = await rRes.json();
+                
+                allBookings = bData.data || [];
+                // Sort bookings so newest are first
+                allBookings.sort((a,b) => b.id - a.id);
+                
+                allResources = rData.data || [];
+                render();
+            } catch (e) { console.error('Data sync failed', e); }
+        }
+
+        // --- UI & TAB SWITCHING LOGIC --- //
+
+        function setFilter(f) {
+            currentFilter = f;
+            activeBookingModeResourceId = null; // reset booking form if open
+            document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById(`tab-${f}`).classList.add('active');
+            render();
+        }
+
+        function render() {
+            // Stats
+            document.getElementById('stat-total').innerText = allBookings.length;
+            document.getElementById('stat-pending').innerText = allBookings.filter(b => b.status === 'PENDING').length;
+            document.getElementById('stat-approved').innerText = allBookings.filter(b => b.status === 'APPROVED').length;
+            document.getElementById('stat-resources').innerText = allResources.length;
+
+            const isResourceView = currentFilter === 'RESOURCES';
+            document.getElementById('add-resource-btn').classList.toggle('hidden', !isResourceView);
+            document.getElementById('type-filter').classList.toggle('hidden', !isResourceView);
+            document.getElementById('search-input').placeholder = isResourceView ? "Search resources by location or name..." : "Search by student, resource or ID...";
+
+            const container = document.getElementById('booking-list');
+            const query = document.getElementById('search-input').value.toLowerCase();
+
+            if (isResourceView) {
+                renderResources(container, query);
+            } else {
+                renderBookingsTable(container, query);
+            }
+        }
+
+        // --- BOOKING LIST LOGIC --- //
+
+        function renderBookingsTable(container, query) {
+            const filtered = allBookings.filter(b => {
+                const matchesFilter = currentFilter === 'ALL' || b.status === currentFilter;
+                const matchesSearch = (b.bookingReference?.toLowerCase().includes(query)) || 
+                                     (b.resourceName?.toLowerCase().includes(query)) || 
+                                     (b.studentName?.toLowerCase().includes(query));
+                return matchesFilter && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = `<div class="premium-card p-20 text-center">
+                    <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <svg class="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                    </div>
+                    <p class="font-bold text-slate-400">No bookings match this filter.</p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = `<div class="space-y-4">${filtered.map(b => {
+                const resource = allResources.find(r => r.id === b.resourceId);
+                const imgUrl = resource?.images?.[0] || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=200';
+                const statusColors = {
+                    'PENDING':  'bg-amber-50 text-amber-700 border border-amber-200',
+                    'APPROVED': 'bg-emerald-50 text-emerald-700 border border-emerald-200',
+                    'REJECTED': 'bg-rose-50 text-rose-700 border border-rose-200'
+                };
+                const statusBadge = statusColors[b.status] || 'bg-slate-100 text-slate-600';
+                const startFmt = b.startTime?.substring(0,5) || b.startTime;
+                const endFmt   = b.endTime?.substring(0,5)   || b.endTime;
+
+                return `
+                <div class="premium-card overflow-hidden flex" id="booking-card-${b.id}">
+                    <!-- Left: Resource Thumbnail -->
+                    <div class="w-36 shrink-0 bg-cover bg-center" style="background-image: url('${imgUrl}')"></div>
+
+                    <!-- Middle: Details -->
+                    <div class="flex-1 p-5">
+                        <div class="flex items-start justify-between gap-4 mb-3">
+                            <div>
+                                <div class="flex items-center gap-2 mb-1">
+                                    <h3 class="font-black text-slate-900 text-base">${b.resourceName}</h3>
+                                    <span class="text-[9px] font-black px-2 py-0.5 rounded uppercase bg-blue-50 text-blue-600">${(b.resourceType || '').replace(/_/g,' ')}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-3 text-xs text-slate-500 font-bold">
+                                    <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>${b.bookingDate}</span>
+                                    <span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>${startFmt} – ${endFmt}</span>
+                                    ${b.attendees ? `<span class="flex items-center gap-1"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857"/></svg>${b.attendees} Attendees</span>` : ''}
+                                </div>
+                            </div>
+                            <span class="text-[10px] font-black px-3 py-1 rounded-full uppercase ${statusBadge} shrink-0">${b.status}</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-4 text-xs font-semibold text-slate-600 mb-1">
+                            <span class="flex items-center gap-1"><svg class="w-3 h-3 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>${b.studentName}</span>
+                            <span class="text-slate-400">${b.studentEmail}</span>
+                        </div>
+                        ${b.purpose ? `<p class="text-xs text-slate-500 italic mt-1 line-clamp-1">📋 ${b.purpose}</p>` : ''}
+                    </div>
+
+                    <!-- Right: Action Buttons -->
+                    <div class="flex flex-col justify-center gap-2 px-5 border-l border-slate-100 shrink-0">
+                        ${b.status === 'PENDING' ? `
+                            <button onclick="openApproveModal(${b.id})" class="flex items-center gap-1.5 px-4 py-2.5 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl font-bold text-sm shadow-sm shadow-emerald-100 transition-all">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 13l4 4L19 7"/></svg> Approve
+                            </button>
+                            <button onclick="openRejectModal(${b.id})" class="flex items-center gap-1.5 px-4 py-2.5 bg-rose-500 hover:bg-rose-600 text-white rounded-xl font-bold text-sm shadow-sm shadow-rose-100 transition-all">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"/></svg> Reject
+                            </button>
+                            <button onclick="deleteBooking(${b.id})" class="flex items-center gap-1.5 px-4 py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl font-bold text-sm transition-all">
+                                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg> Delete
+                            </button>
+                        ` : `
+                            <span class="text-[10px] font-black text-slate-300 uppercase tracking-widest text-center px-4">Archived</span>
+                        `}
+                    </div>
+                </div>`;
+            }).join('')}</div>`;
+        }
+
+        // --- APPROVE / REJECT MODAL LOGIC --- //
+
+        let actionBookingId = null;
+
+        function buildBookingDetailsHTML(b) {
+            const startFmt = b.startTime?.substring(0,5) || b.startTime;
+            const endFmt   = b.endTime?.substring(0,5)   || b.endTime;
+            return `
+                <p class="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-2">📋 Booking Details</p>
+                <p class="font-bold text-slate-900">${b.resourceName}</p>
+                <p class="text-sm text-slate-500">${b.bookingDate} &nbsp;•&nbsp; ${startFmt} – ${endFmt}</p>
+                <p class="text-sm text-slate-500 mt-1">Student: <span class="font-bold text-slate-700">${b.studentName}</span></p>
+                <p class="text-sm text-slate-400">${b.studentEmail}</p>
+            `;
+        }
+
+        function openApproveModal(id) {
+            actionBookingId = id;
+            const b = allBookings.find(x => x.id === id);
+            document.getElementById('approve-details').innerHTML = buildBookingDetailsHTML(b);
+            document.getElementById('approve-modal').classList.add('show');
+        }
+
+        function closeApproveModal() {
+            document.getElementById('approve-modal').classList.remove('show');
+            actionBookingId = null;
+        }
+
+        async function confirmApprove() {
+            if (!actionBookingId) return;
+            await updateBooking(actionBookingId, 'approve', {});
+            closeApproveModal();
+        }
+
+        function openRejectModal(id) {
+            actionBookingId = id;
+            const b = allBookings.find(x => x.id === id);
+            document.getElementById('reject-details').innerHTML = buildBookingDetailsHTML(b);
+            document.getElementById('reject-reason').value = '';
+            document.getElementById('reject-modal').classList.add('show');
+        }
+
+        function closeRejectModal() {
+            document.getElementById('reject-modal').classList.remove('show');
+            actionBookingId = null;
+        }
+
+        async function confirmReject() {
+            const reason = document.getElementById('reject-reason').value.trim();
+            if (!reason) { alert('Please enter a rejection reason.'); return; }
+            await updateBooking(actionBookingId, 'reject', { reason });
+            closeRejectModal();
+        }
+
+        async function updateBooking(id, action, body) {
+            try {
+                const res = await fetch(`${API_URL}/bookings/${id}/${action}`, {
+                    method: 'PATCH',
+                    headers: jsonHeaders,
+                    body: JSON.stringify(body)
+                });
+                if (res.ok) fetchData();
+                else {
+                    const error = await res.json();
+                    alert(`Action Failed: ${error.message}`);
+                }
+            } catch (e) { alert('Connection failed'); }
+        }
+
+        async function deleteBooking(id) {
+            if (!confirm('Delete this booking request permanently?')) return;
+            try {
+                const res = await fetch(`${API_URL}/bookings/${id}`, { method: 'DELETE', headers: jsonHeaders });
+                if (res.ok) fetchData();
+                else alert('Delete failed.');
+            } catch(e) { alert('Connection error.'); }
+        }
+
+        // --- RESOURCE GRID LOGIC --- //
+
+        function renderResources(container, query) {
+            const typeF = document.getElementById('type-filter').value;
+            const filtered = allResources.filter(r => {
+                const nameMatch = (r.name || '').toLowerCase().includes(query);
+                const locMatch = (r.location || '').toLowerCase().includes(query);
+                const typeMatch = (r.type || '').toLowerCase().includes(query);
+                
+                return (typeF === 'ALL' || r.type === typeF) && (query === '' || nameMatch || locMatch || typeMatch);
+            });
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 text-slate-400 font-medium">No resources found matching your settings.</div>';
+                return;
+            }
+
+            container.innerHTML = `<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                ${filtered.map(r => generateResourceCardHTML(r)).join('')}
+            </div>`;
+        }
+
+        function generateResourceCardHTML(r) {
+            return `
+                <div class="premium-card overflow-hidden group flex flex-col h-full" id="card-${r.id}">
+                    <div class="h-40 bg-slate-100 bg-cover bg-center transition-transform group-hover:scale-105 shrink-0" style="background-image: url('${r.images?.[0] || 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=400'}')"></div>
+                    <div class="p-6 flex flex-col flex-1">
+                        <div class="flex justify-between items-start mb-4">
+                            <div>
+                                <h4 class="font-bold text-slate-900 leading-tight">${r.name}</h4>
+                                <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">${r.location}</p>
+                            </div>
+                            <span class="bg-blue-50 text-blue-600 text-[9px] font-black px-2 py-0.5 rounded uppercase">${r.type.replace('_', ' ')}</span>
+                        </div>
+                        <div class="flex justify-between items-center mt-auto mb-5">
+                            <span class="bg-emerald-50 text-emerald-600 px-2.5 py-1 rounded-md text-[10px] font-black uppercase tracking-wider">Available</span>
+                            <span class="text-[11px] font-bold text-slate-500 uppercase flex items-center gap-1"><svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg> ${r.capacity} Max</span>
+                        </div>
+                        
+                        <div class="flex gap-2">
+                            <button onclick="openBookModal(${r.id})" class="flex-1 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-sm transition-colors shadow-md shadow-indigo-100 flex items-center justify-center gap-1"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Book Now</button>
+                            <button onclick="editResource(${r.id})" class="p-2.5 bg-slate-50 hover:bg-blue-50 text-slate-400 hover:text-blue-600 rounded-xl transition-colors"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg></button>
+                            <button onclick="deleteResource(${r.id})" class="p-2.5 bg-slate-50 hover:bg-rose-50 text-slate-400 hover:text-rose-600 rounded-xl transition-colors"><svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- BOOK NOW MODAL LOGIC --- //
+
+        let bookModalResourceId = null;
+        const TIME_SLOTS = [
+            { label: '8:00 AM – 10:00 AM', start: '08:00', end: '10:00' },
+            { label: '10:00 AM – 12:00 PM', start: '10:00', end: '12:00' },
+            { label: '12:00 PM – 2:00 PM',  start: '12:00', end: '14:00' },
+            { label: '2:00 PM – 4:00 PM',   start: '14:00', end: '16:00' },
+            { label: '4:00 PM – 6:00 PM',   start: '16:00', end: '18:00' },
+        ];
+
+        function openBookModal(resourceId) {
+            bookModalResourceId = resourceId;
+            const r = allResources.find(x => x.id === resourceId);
+            document.getElementById('book-modal-title').innerText = `Book ${r.name}`;
+            document.getElementById('book-modal-subtitle').innerText = `${r.location} • Capacity: ${r.capacity} • Select a 2-hour time slot`;
+            document.getElementById('book-form').reset();
+            document.getElementById('bk-start').value = '';
+            document.getElementById('bk-end').value = '';
+            document.getElementById('slot-selection-label').innerText = '';
+            document.getElementById('slot-grid').innerHTML = '<p class="col-span-2 text-center text-slate-400 text-sm py-4">Pick a date to see availability</p>';
+            // Set minimum date to today
+            document.getElementById('bk-date').min = new Date().toISOString().split('T')[0];
+            document.getElementById('book-modal').classList.add('show');
+        }
+
+        function closeBookModal() {
+            document.getElementById('book-modal').classList.remove('show');
+            bookModalResourceId = null;
+        }
+
+        function getSlotStatus(slot, dateStr, resourceId) {
+            // Find bookings for this resource on this date
+            const relevantBookings = allBookings.filter(b => 
+                b.resourceId === resourceId && b.bookingDate === dateStr
+            );
+
+            for (const booking of relevantBookings) {
+                const bStart = booking.startTime; // e.g. "08:00:00" or "08:00"
+                const bEnd   = booking.endTime;
+                // Overlap check: slot overlaps if bStart < slotEnd AND bEnd > slotStart
+                const slotStart = slot.start;
+                const slotEnd   = slot.end;
+                if (bStart < slotEnd && bEnd > slotStart) {
+                    if (booking.status === 'APPROVED') return 'booked';
+                    if (booking.status === 'PENDING')  return 'pending';
+                }
+            }
+            return 'available';
+        }
+
+        function refreshSlots() {
+            const dateStr = document.getElementById('bk-date').value;
+            if (!dateStr || !bookModalResourceId) return;
+
+            // Clear selection
+            document.getElementById('bk-start').value = '';
+            document.getElementById('bk-end').value = '';
+            document.getElementById('slot-selection-label').innerText = '';
+
+            const grid = document.getElementById('slot-grid');
+            grid.innerHTML = TIME_SLOTS.map(slot => {
+                const status = getSlotStatus(slot, dateStr, bookModalResourceId);
+                let cls = 'slot-btn ';
+                let icon = '';
+                let badge = '';
+                if (status === 'booked') {
+                    cls += 'slot-booked';
+                    icon = '<svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636"/></svg>';
+                    badge = '<span class="text-[10px] font-black uppercase tracking-wide ml-1">Booked</span>';
+                } else if (status === 'pending') {
+                    cls += 'slot-pending';
+                    icon = '<svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+                    badge = '<span class="text-[10px] font-black uppercase tracking-wide ml-1">Pending</span>';
+                } else {
+                    cls += 'slot-available';
+                    icon = '<svg class="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>';
+                    badge = '';
+                }
+                const clickable = status === 'available' ? `onclick="selectSlot('${slot.start}','${slot.end}','${slot.label}')"` : 'disabled';
+                return `<button type="button" class="${cls}" ${clickable} data-start="${slot.start}" data-end="${slot.end}">
+                    <span>${slot.label}</span>
+                    <span class="flex items-center gap-0.5">${badge}${icon}</span>
+                </button>`;
+            }).join('');
+        }
+
+        function selectSlot(start, end, label) {
+            document.getElementById('bk-start').value = start;
+            document.getElementById('bk-end').value = end;
+            document.getElementById('slot-selection-label').innerText = `✅ Selected: ${label}`;
+            // Visual: highlight selected, deselect others
+            document.querySelectorAll('#slot-grid .slot-available').forEach(btn => {
+                btn.classList.remove('slot-selected');
+                btn.classList.add('slot-available');
+            });
+            const btns = document.querySelectorAll('#slot-grid [data-start]');
+            btns.forEach(btn => {
+                if (btn.dataset.start === start) {
+                    btn.classList.remove('slot-available');
+                    btn.classList.add('slot-selected');
+                }
+            });
+        }
+
+        async function submitBooking(event) {
+            event.preventDefault();
+            const startVal = document.getElementById('bk-start').value;
+            const endVal   = document.getElementById('bk-end').value;
+            if (!startVal || !endVal) {
+                alert('Please select a time slot first!');
+                return;
+            }
+            const payload = {
+                resourceId:   bookModalResourceId,
+                studentName:  document.getElementById('bk-name').value,
+                studentEmail: document.getElementById('bk-email').value,
+                studentPhone: document.getElementById('bk-phone').value,
+                bookingDate:  document.getElementById('bk-date').value,
+                startTime:    startVal,
+                endTime:      endVal,
+                purpose:      document.getElementById('bk-purpose').value,
+                specialRequests: document.getElementById('bk-special').value
+            };
+
+            const btn = document.getElementById('book-submit-btn');
+            btn.disabled = true;
+            btn.innerText = 'Submitting...';
+
+            try {
+                const res = await fetch(`${API_URL}/bookings`, {
+                    method: 'POST',
+                    headers: jsonHeaders,
+                    body: JSON.stringify(payload)
+                });
+                if (res.ok) {
+                    closeBookModal();
+                    // Switch to pending tab
+                    currentFilter = 'PENDING';
+                    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+                    document.getElementById('tab-PENDING').classList.add('active');
+                    await fetchData();
+                    alert('✅ Booking submitted! It is now in the Pending Queue.');
+                } else {
+                    const err = await res.json();
+                    alert(`Failed to book: ${err.message}`);
+                }
+            } catch(e) { alert('Connection error.'); }
+            finally {
+                btn.disabled = false;
+                btn.innerHTML = '<svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg> Book 2-Hour Slot';
+            }
+        }
+
+
+        // --- RESOURCE MANAGE & MODAL LOGIC --- //
+
+        // Single image tracking
+        let selectedFile = null;       // The new File from computer (if any)
+        let existingImageUrl = null;   // Server URL of existing image (if any)
+
+        function handleImageSelect() {
+            const input = document.getElementById('image-input');
+            if (!input.files || input.files.length === 0) return;
+            selectedFile = input.files[0];
+            existingImageUrl = null; // new file replaces any existing
+            input.value = ''; // reset so same file can be re-picked
+            updateImagePreview();
+        }
+
+        function updateImagePreview() {
+            const prompt  = document.getElementById('upload-prompt');
+            const area    = document.getElementById('preview-area');
+            const img     = document.getElementById('preview-img');
+
+            if (selectedFile) {
+                // Show local file preview
+                img.src = URL.createObjectURL(selectedFile);
+                prompt.classList.add('hidden');
+                area.classList.remove('hidden');
+                area.classList.add('flex');
+            } else if (existingImageUrl) {
+                // Show saved server image
+                img.src = existingImageUrl;
+                prompt.classList.add('hidden');
+                area.classList.remove('hidden');
+                area.classList.add('flex');
+            } else {
+                // No image — show upload prompt
+                img.src = '';
+                area.classList.add('hidden');
+                area.classList.remove('flex');
+                prompt.classList.remove('hidden');
+            }
+        }
+
+        function clearImage() {
+            selectedFile = null;
+            existingImageUrl = null;
+            updateImagePreview();
+        }
+
+        // Legacy stubs (unused but kept safe)
+        function updatePreviews() {}
+        function removeExistingImage() {}
+        function removeNewImage() {}
+        function removeImage() {}
+
+        function openResourceModal() {
+            document.getElementById('modal-title').innerText = "Create New Resource";
+            document.getElementById('resource-form').reset();
+            document.getElementById('edit-id').value = "";
+            selectedFile = null;
+            existingImageUrl = null;
+            updateImagePreview();
+            document.getElementById('resource-modal').classList.add('show');
+            updateCharCount();
+        }
+
+        function closeResourceModal() { document.getElementById('resource-modal').classList.remove('show'); }
+
+        function editResource(id) {
+            const r = allResources.find(x => x.id === id);
+            if (!r) return;
+            document.getElementById('modal-title').innerText = "Edit Resource";
+            document.getElementById('edit-id').value = r.id;
+            document.getElementById('name').value = r.name;
+            document.getElementById('type').value = r.type;
+            document.getElementById('capacity').value = r.capacity;
+            document.getElementById('location').value = r.location;
+            document.getElementById('description').value = r.description || '';
+            // Load first saved image (single image)
+            selectedFile = null;
+            existingImageUrl = (r.images && r.images.length > 0) ? r.images[0] : null;
+            updateImagePreview();
+            document.getElementById('resource-modal').classList.add('show');
+            updateCharCount();
+        }
+
+        async function deleteResource(id) {
+            if (!confirm("Are you sure you want to delete this resource?")) return;
+            try {
+                const res = await fetch(`${API_URL}/resources/${id}`, { 
+                    method: 'DELETE', headers: authHeaders
+                });
+                if (res.ok) fetchData();
+                else alert("Failed to delete (Resource might be tied to active bookings!)");
+            } catch (e) { alert('Delete failed'); }
+        }
+
+        function updateCharCount() {
+            const text = document.getElementById('description').value.trim();
+            const count = text.length;
+            const display = document.getElementById('char-count');
+            display.innerText = `${count} letters (min 20)`;
+            display.classList.toggle('text-rose-500', count < 20);
+            display.classList.toggle('text-emerald-500', count >= 20);
+        }
+
+        document.getElementById('resource-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const desc = document.getElementById('description').value.trim();
+            if (desc.length < 20) {
+                alert("Description must be at least 20 letters.");
+                return;
+            }
+
+            const id = document.getElementById('edit-id').value;
+            const formData = new FormData();
+            formData.append('name', document.getElementById('name').value);
+            formData.append('type', document.getElementById('type').value);
+            formData.append('capacity', document.getElementById('capacity').value);
+            formData.append('location', document.getElementById('location').value);
+            formData.append('description', document.getElementById('description').value);
+            
+            if (selectedFile) {
+                // A new image was chosen — upload it
+                formData.append('images', selectedFile);
+                if (id) formData.append('keepImages', ''); // discard old images
+            } else if (id && existingImageUrl) {
+                // Keep the existing image, no new file
+                formData.append('keepImages', existingImageUrl);
+            } else if (id) {
+                // User cleared the image
+                formData.append('keepImages', '');
+            }
+
+            try {
+                const res = await fetch(`${API_URL}/resources${id ? '/' + id : ''}`, {
+                    method: id ? 'PUT' : 'POST',
+                    headers: authHeaders,
+                    body: formData
+                });
+                if (res.ok) { closeResourceModal(); fetchData(); }
+                else { 
+                    const err = await res.json();
+                    alert(`Failed: ${err.message || 'Server Error'}`); 
+                }
+            } catch (err) { alert('Connection error.'); }
+        }
+
+
+
+
+        // INIT
+        fetchData();
+    </script>
+</body>
+</html>
