@@ -35,3 +35,4 @@ Auth: Sanitize user input in login form
 Notifications: Add push notification fallback
 Facilities: Update building floor plan mapping
 Booking: Refine cancellation policy enforcement
+Tickets: Export ticket history to CSV
