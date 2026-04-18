@@ -1,0 +1,28 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Build & Dependencies
+target/
+node_modules/
+dist/
+build/
+.gradle/
+bin/
+out/
+
+# Secrets & Environment
+.env
+.env.local
+secrets.properties
+**/secrets.properties
+
+# Logs
+*.log
+error_log.txt
+
+# OS
+.DS_Store
+Thumbs.db
