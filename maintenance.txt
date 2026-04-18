@@ -36,3 +36,4 @@ Notifications: Add push notification fallback
 Facilities: Update building floor plan mapping
 Booking: Refine cancellation policy enforcement
 Tickets: Export ticket history to CSV
+Auth: Implement rate limiting for password reset
