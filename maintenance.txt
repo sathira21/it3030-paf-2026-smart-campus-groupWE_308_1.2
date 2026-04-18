@@ -45,3 +45,4 @@ Auth: Update JWT secret rotation policy
 System: Optimize database query performance for dashboard
 Auth: Implement multi-factor authentication for admin logins
 Auth: Refactor JWT middleware for better security
+Auth: Update session timeout handling
