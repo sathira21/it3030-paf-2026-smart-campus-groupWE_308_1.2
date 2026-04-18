@@ -28,3 +28,4 @@ Booking: Refactor date validation service
 Tickets: Improve ticket status transition flow
 Auth: Optimize OAuth2 token renewal
 Notifications: Fix email template styling
+Facilities: Add capacity check for conference rooms
