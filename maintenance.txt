@@ -39,3 +39,4 @@ Tickets: Export ticket history to CSV
 Auth: Implement rate limiting for password reset
 Notifications: Batch notification processing
 Facilities: Add search filter for facility types
+Booking: Improve mobile responsiveness of calendar
