@@ -49,3 +49,4 @@ Auth: Update session timeout handling
 Auth: Secure password reset flow with temporary tokens
 Auth: Add audit logging for failed login attempts
 Auth: Improve user profile update validation
+Notifications: Integrate WebSocket for real-time alerts
