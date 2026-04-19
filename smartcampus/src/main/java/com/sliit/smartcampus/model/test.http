@@ -1,0 +1,7 @@
+### Get all notifications for User ID 1
+GET http://localhost:8081/api/notifications/user/1
+
+###
+
+### Mark Notification ID 1 as Read
+PUT http://localhost:8081/api/notifications/1/read

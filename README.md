@@ -1,1 +1,1 @@
-# Smart Campus Project Contributions
+# Smart Campus Project
